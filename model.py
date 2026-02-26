@@ -74,8 +74,8 @@ def fetch_mining_news(mine_type):
     return news_list
 from email.mime.text import MIMEText
 def send_email(subject, message, to_emails):
-    sender_email = "dheerajvofficial811@gmail.com"
-    sender_password = "eyos aqlp ybgi tiog"
+    sender_email = ""
+    sender_password = ""
 
     msg = MIMEText(message)
     msg['Subject'] = subject
@@ -91,10 +91,6 @@ def send_email(subject, message, to_emails):
         return False, f"Error sending email: {str(e)}"
 
 recipients = [
-    "ashwinvqcon@gmail.com",
-    "anshika.tiwari1829@gmail.com",
-    "ss7942911@gmail.com",
-    "anand19122004@gmail.com"
 ]
 
 
@@ -1577,6 +1573,7 @@ elif section == "Help Desk":
                 st.error("Invalid Ticket ID.")
     else:
         st.info("No incidents reported yet.")
+
 
 
 
