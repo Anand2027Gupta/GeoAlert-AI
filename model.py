@@ -93,8 +93,8 @@ def send_email(subject, message, to_emails):
 recipients = [
     "ashwinvqcon@gmail.com",
     "anshika.tiwari1829@gmail.com",
-    ss7942911@gmail.com",
-    anand19122004@gmail.com"
+    "ss7942911@gmail.com",
+    "anand19122004@gmail.com"
 ]
 
 
@@ -1577,6 +1577,7 @@ elif section == "Help Desk":
                 st.error("Invalid Ticket ID.")
     else:
         st.info("No incidents reported yet.")
+
 
 
 
