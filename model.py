@@ -72,34 +72,7 @@ def fetch_mining_news(mine_type):
         })
 
     return news_list
-from email.mime.text import MIMEText
-def send_email(subject, message, to_emails):
-    sender_email = ""
-    sender_password = ""
 
-    msg = MIMEText(message)
-    msg['Subject'] = subject
-    msg['From'] = sender_email
-    msg['To'] = ", ".join(to_emails)
-
-    try:
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
-            server.login(sender_email, sender_password)
-            server.sendmail(sender_email, to_emails, msg.as_string())
-        return True, "Email sent successfully."
-    except smtplib.SMTPException as e:
-        return False, f"Error sending email: {str(e)}"
-
-recipients = [
-]
-
-
-
-send_email(
-    subject="Rockfall Alert",
-    message="Warning! Rockfall detected in Zone Overburden Dump. Please take immediate action.",
-    to_emails=recipients
-)
 import streamlit as st
 import pandas as pd
 import numpy as np
