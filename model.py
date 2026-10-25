@@ -1,13 +1,17 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import os
+import re
+import uuid
+from io import BytesIO
 from datetime import datetime, timedelta
 from pandas.errors import EmptyDataError
 import joblib
 
+from notifications import send_email
 
-
-import smtplib
+from underground_preprocessing import preprocess_input, predict as underground_predict, load_artifacts
 st.markdown("""
 <style>
 
@@ -82,7 +86,22 @@ from pandas.errors import EmptyDataError
 
 def process_uploaded_file(file):
 
-    df = pd.read_csv(file)
+    try:
+        df = pd.read_csv(file)
+    except EmptyDataError:
+        raise ValueError("Uploaded file is empty.")
+    except Exception as e:
+        raise ValueError(f"Unable to read CSV file: {e}")
+
+    if len(df) == 0:
+        raise ValueError("Uploaded file contains no data rows.")
+
+    stats = {
+        'rows_read': len(df),
+        'rows_rejected': 0,
+        'columns_missing': [],
+        'synthetic': False,
+    }
 
     df.columns = (
         df.columns
@@ -104,18 +123,32 @@ def process_uploaded_file(file):
     required_columns = {'fs', 'reinforcement'}
     if not required_columns.issubset(df.columns):
         missing = required_columns - set(df.columns)
+        stats['columns_missing'] = list(missing)
         raise ValueError(f"Missing required columns: {', '.join(missing)}")
+
+    rows_before = len(df)
+
+    # Validate numeric columns: coerce to numeric, track rows that become NaN
+    for col in ['fs', 'reinforcement']:
+        if col in df.columns:
+            df[col] = pd.to_numeric(df[col], errors='coerce')
 
     df = df.dropna(subset=['fs', 'reinforcement'])
 
+    rows_after = len(df)
+    stats['rows_rejected'] = rows_before - rows_after
+
+    if len(df) == 0:
+        raise ValueError("All rows were rejected due to missing or invalid numeric values.")
+
     if 'timestamp' not in df.columns:
-        df['timestamp'] = pd.date_range(datetime.now(), periods=len(df), freq='T')
+        df['timestamp'] = pd.date_range(datetime.now(), periods=len(df), freq='min')
 
     df['timestamp'] = pd.to_datetime(df['timestamp'])
 
     df['rockfall_risk'] = ((df['fs'] < 1.4) | (df['reinforcement'] < 0.4)).astype(int)
 
-    return df
+    return df, stats
 
 
 def generate_mock_data(n=100):
@@ -134,7 +167,7 @@ def generate_mock_data(n=100):
         'timestamp': pd.date_range(
             datetime.now() - timedelta(minutes=n),
             periods=n,
-            freq='T'),
+            freq='min'),
     })
 
     data['rockfall_risk'] = ((data['fs'] < 1.4) | (data['reinforcement'] < 0.4)).astype(int)
@@ -144,7 +177,22 @@ def generate_mock_data(n=100):
 
 def process_underground_file(file):
 
-    df = pd.read_csv(file)
+    try:
+        df = pd.read_csv(file)
+    except EmptyDataError:
+        raise ValueError("Uploaded file is empty.")
+    except Exception as e:
+        raise ValueError(f"Unable to read CSV file: {e}")
+
+    if len(df) == 0:
+        raise ValueError("Uploaded file contains no data rows.")
+
+    stats = {
+        'rows_read': len(df),
+        'rows_rejected': 0,
+        'columns_missing': [],
+        'synthetic': False,
+    }
 
     df.columns = (
         df.columns
@@ -165,16 +213,36 @@ def process_underground_file(file):
 
     if not required_columns.issubset(df.columns):
         missing = required_columns - set(df.columns)
+        stats['columns_missing'] = list(missing)
         raise ValueError(f"Missing required columns: {', '.join(missing)}")
+
+    rows_before = len(df)
+
+    # Validate numeric columns: coerce to numeric, track rows that become NaN
+    numeric_cols = [
+        'genergy', 'gpuls', 'gdenergy', 'gdpuls',
+        'nbumps', 'nbumps2', 'nbumps3', 'nbumps4',
+        'nbumps5', 'nbumps6', 'nbumps7', 'nbumps89',
+        'energy', 'maxenergy'
+    ]
+    for col in numeric_cols:
+        if col in df.columns:
+            df[col] = pd.to_numeric(df[col], errors='coerce')
 
     df = df.dropna()
 
+    rows_after = len(df)
+    stats['rows_rejected'] = rows_before - rows_after
+
+    if len(df) == 0:
+        raise ValueError("All rows were rejected due to missing or invalid numeric values.")
+
     if 'timestamp' not in df.columns:
-        df['timestamp'] = pd.date_range(datetime.now(), periods=len(df), freq='T')
+        df['timestamp'] = pd.date_range(datetime.now(), periods=len(df), freq='min')
 
     df['timestamp'] = pd.to_datetime(df['timestamp'])
 
-    return df
+    return df, stats
 
 
 def generate_underground_mock_data(n=100):
@@ -203,10 +271,138 @@ def generate_underground_mock_data(n=100):
         'timestamp': pd.date_range(
             datetime.now() - timedelta(minutes=n),
             periods=n,
-            freq='T'),
+            freq='min'),
     })
 
     return data
+
+
+# ---------------------------------------------------------------------------
+# Upload directory helpers (Phase 2: keep uploaded data separate from bundled datasets)
+# ---------------------------------------------------------------------------
+USER_DATA_DIR = "user_data"
+OPEN_PIT_UPLOAD_DIR = os.path.join(USER_DATA_DIR, "open_pit_uploads")
+UNDERGROUND_UPLOAD_DIR = os.path.join(USER_DATA_DIR, "underground_uploads")
+
+
+def get_upload_dir(mine_type):
+    """Return the upload directory for the selected mine type."""
+    if mine_type == "Open Pit Mines":
+        return OPEN_PIT_UPLOAD_DIR
+    return UNDERGROUND_UPLOAD_DIR
+
+
+def sanitize_filename(filename):
+    """Strip path traversal and unsafe characters from an uploaded filename."""
+    basename = os.path.basename(filename or "upload.csv")
+    safe = re.sub(r'[^a-zA-Z0-9._-]', '_', basename)
+    if not safe or safe in ('.', '..'):
+        safe = "upload.csv"
+    return safe
+
+
+def get_unique_filename(upload_dir, original_name):
+    """Create a unique, timestamp-prefixed filename inside upload_dir."""
+    safe_name = sanitize_filename(original_name)
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    name, ext = os.path.splitext(safe_name)
+    if not ext:
+        ext = ".csv"
+    return f"{timestamp}_{name}{ext}"
+
+
+def save_uploaded_bytes(file_bytes, upload_dir, filename):
+    """Save raw uploaded bytes to disk and return the saved file path."""
+    os.makedirs(upload_dir, exist_ok=True)
+    file_path = os.path.join(upload_dir, filename)
+    with open(file_path, "wb") as f:
+        f.write(file_bytes)
+    return file_path
+
+
+# ---------------------------------------------------------------------------
+# Help desk attachment security helpers (Phase 4A)
+# ---------------------------------------------------------------------------
+HELPDESK_ATTACHMENT_DIR = "helpdesk_attachments"
+MAX_ATTACHMENT_SIZE_MB = 10
+MAX_ATTACHMENT_SIZE_BYTES = MAX_ATTACHMENT_SIZE_MB * 1024 * 1024
+ALLOWED_ATTACHMENT_EXTENSIONS = {'.png', '.jpg', '.jpeg', '.csv', '.pdf'}
+
+
+def secure_attachment_filename(original_filename):
+    """Strip path components and validate extension from an uploaded filename.
+
+    Returns (safe_basename, error_message). On success, error_message is None.
+    On failure, safe_basename is None and error_message describes the problem.
+    """
+    if not original_filename or not str(original_filename).strip():
+        return None, "No filename provided."
+
+    raw = str(original_filename).strip()
+
+    # Reject path traversal and separator patterns in the raw filename
+    # BEFORE basename strips them, so we can report the correct error.
+    if '..' in raw or '/' in raw or '\\' in raw:
+        return None, "Filename contains invalid path characters."
+
+    basename = os.path.basename(raw)
+
+    # Reject empty basename after stripping
+    if not basename or basename in ('.', '..'):
+        return None, "Invalid filename."
+
+    # Validate file extension against allowed types
+    _, ext = os.path.splitext(basename)
+    ext = ext.lower()
+    if ext not in ALLOWED_ATTACHMENT_EXTENSIONS:
+        return None, f"File type '{ext}' is not allowed. Allowed: {', '.join(sorted(ALLOWED_ATTACHMENT_EXTENSIONS))}."
+
+    return basename, None
+
+
+def save_helpdesk_attachment(file_bytes, original_filename):
+    """Save an uploaded help desk attachment securely.
+
+    The file is written under HELPDESK_ATTACHMENT_DIR using a UUID-based
+    server-side filename (with the original extension preserved). The original
+    filename is returned separately for display purposes.
+
+    Returns (server_path, original_display_name, error_message).
+    On success, error_message is None. On failure, the first two values are None.
+    """
+    if not file_bytes:
+        return None, None, "Empty file uploaded."
+
+    if len(file_bytes) > MAX_ATTACHMENT_SIZE_BYTES:
+        return None, None, f"File exceeds {MAX_ATTACHMENT_SIZE_MB} MB size limit."
+
+    basename, err = secure_attachment_filename(original_filename)
+    if err:
+        return None, None, err
+
+    # Generate UUID-based server-side filename preserving the original extension
+    _, ext = os.path.splitext(basename)
+    server_filename = f"{uuid.uuid4().hex}{ext}"
+
+    # Resolve the target directory and verify confinement before writing
+    os.makedirs(HELPDESK_ATTACHMENT_DIR, exist_ok=True)
+    target_dir = os.path.abspath(HELPDESK_ATTACHMENT_DIR)
+    target_path = os.path.abspath(os.path.join(target_dir, server_filename))
+
+    if not (target_path == target_dir or target_path.startswith(target_dir + os.sep)):
+        return None, None, "Unsafe file path detected."
+
+    # Avoid overwriting on collision (extremely unlikely with UUID, but defensive)
+    if os.path.exists(target_path):
+        return None, None, "Attachment name collision. Please try again."
+
+    try:
+        with open(target_path, "wb") as f:
+            f.write(file_bytes)
+    except OSError:
+        return None, None, "Failed to save attachment."
+
+    return target_path, basename, None
 
 
 st.sidebar.title("MineSafe Navigation")
@@ -223,15 +419,24 @@ uploaded_file = st.sidebar.file_uploader(
 
 if uploaded_file:
     try:
+        # Save raw uploaded bytes to user_data directory (Phase 2: never overwrite bundled datasets)
+        file_bytes = uploaded_file.getvalue()
+        upload_dir = get_upload_dir(mine_type)
+        saved_name = get_unique_filename(upload_dir, uploaded_file.name)
+        saved_path = save_uploaded_bytes(file_bytes, upload_dir, saved_name)
+
+        # Process from in-memory bytes so the file pointer starts at the beginning
+        file_obj = BytesIO(file_bytes)
+
         if mine_type == "Open Pit Mines":
-            data = process_uploaded_file(uploaded_file)
-            data.to_csv("slope_stability_dataset.csv", index=False)
-
+            data, stats = process_uploaded_file(file_obj)
         else:
-            data = process_underground_file(uploaded_file)
-            data.to_csv("underground_dataset.csv", index=False)
+            data, stats = process_underground_file(file_obj)
 
-        st.sidebar.success("File uploaded and processed!")
+        # Show upload stats
+        st.sidebar.success(f"File uploaded and processed! Saved to: {saved_path}")
+        if stats['rows_rejected'] > 0:
+            st.sidebar.info(f"{stats['rows_rejected']} row(s) rejected due to missing/invalid values ({stats['rows_read'] - stats['rows_rejected']} kept).")
 
     except Exception as e:
         st.sidebar.error(f"Error processing file: {e}")
@@ -241,7 +446,7 @@ if uploaded_file:
         else:
             data = generate_underground_mock_data()
 
-        st.sidebar.warning("Using mock data instead.")
+        st.sidebar.warning("Using synthetic/demo data instead of the invalid upload.")
 
 else:
     try:
@@ -251,7 +456,7 @@ else:
             data = pd.read_csv("underground_dataset.csv")
 
         if 'timestamp' not in data.columns:
-            data['timestamp'] = pd.date_range(datetime.now(), periods=len(data), freq='T')
+            data['timestamp'] = pd.date_range(datetime.now(), periods=len(data), freq='min')
         else:
             data['timestamp'] = pd.to_datetime(data['timestamp'])
 
@@ -264,7 +469,7 @@ else:
         else:
             data = generate_underground_mock_data()
 
-        st.sidebar.warning("No valid uploaded data found. Using mock data.")
+        st.sidebar.warning("No valid uploaded data found. Using synthetic/demo data.")
 
 import streamlit as st
 
@@ -555,57 +760,23 @@ elif section == "Prediction":
 
             else:
 
-                underground_features = [
-                    'seismic',
-                    'seismoacoustic',
-                    'shift',
-                    'hazard',
-                    'genergy',
-                    'gpuls',
-                    'gdenergy',
-                    'gdpuls',
-                    'nbumps',
-                    'nbumps2',
-                    'nbumps3',
-                    'nbumps4',
-                    'nbumps5',
-                    'nbumps6',
-                    'nbumps7',
-                    'nbumps89',
-                    'energy',
-                    'maxenergy'
-                ]
+                # Build a single-row DataFrame from the latest record.
+                input_df = latest.to_frame().T.copy()
 
-                missing_cols = [
-                    col for col in underground_features
-                    if col not in data.columns
-                ]
-
-                if missing_cols:
-                    st.error(f"Missing underground features: {missing_cols}")
-                    prediction = 0
-
-                else:
-
-                    input_df = latest[underground_features].to_frame().T.copy()
-
-
-                    categorical_cols = [
-                        'seismic',
-                        'seismoacoustic',
-                        'shift',
-                        'hazard'
-                    ]
-
-                    for col in categorical_cols:
-                        input_df[col] = (
-                            input_df[col]
-                            .astype('category')
-                            .cat.codes
-                        )
-
-                    prediction = model.predict(input_df)[0]
+                try:
+                    prediction = int(underground_predict(input_df)[0])
                     model_used = True
+                except ValueError as ve:
+                    # Preprocessing errors (missing features, unseen categories,
+                    # missing artifacts) are surfaced clearly to the user.
+                    st.error(f"Underground prediction error: {ve}")
+                    prediction = 0
+                    model_used = False
+                except Exception as e:
+                    # Any other unexpected error during preprocessing/prediction.
+                    st.error(f"Underground prediction error: {e}")
+                    prediction = 0
+                    model_used = False
 
         except Exception as e:
             st.error(f"Model error: {e}")
@@ -765,6 +936,12 @@ elif section == "Alerts":
         notification_method = st.selectbox(
             "Notification Method",
             ["Email", "SMS", "App Notification", "None"]
+        )
+
+        recipient_emails = st.text_input(
+            "Recipient Email(s) (comma-separated)",
+            placeholder="e.g. safety@mine.com, engineer@mine.com",
+            help="Enter one or more email addresses separated by commas.",
         )
 
         if mine_type == "Open Pit Mines" and is_open_pit_data:
@@ -930,7 +1107,7 @@ elif section == "Alerts":
             success, msg = send_email(
                 subject="Rockfall Alert",
                 message=f"Warning! High-risk event detected in {mine_type}. Immediate inspection required.",
-                to_emails=recipients
+                to_emails=recipient_emails,
             )
 
             if success:
@@ -995,7 +1172,14 @@ elif section == "Upload Data":
     if upload_file is not None:
 
         try:
-            new_data = pd.read_csv(upload_file)
+            # Save raw uploaded bytes to user_data directory first (Phase 2: never overwrite bundled datasets)
+            file_bytes = upload_file.getvalue()
+            upload_dir = get_upload_dir(mine_type)
+            saved_name = get_unique_filename(upload_dir, upload_file.name)
+            saved_path = save_uploaded_bytes(file_bytes, upload_dir, saved_name)
+
+            # Process from in-memory bytes so the file pointer starts at the beginning
+            new_data = pd.read_csv(BytesIO(file_bytes))
 
 
             missing_cols = [
@@ -1022,12 +1206,7 @@ elif section == "Upload Data":
             new_data = new_data.reset_index(drop=True)
 
 
-            new_data.to_csv(
-                "slope_stability_dataset.csv",
-                index=False
-            )
-
-            st.success("File uploaded and saved successfully!")
+            st.success(f"File uploaded and saved to: {saved_path}")
 
             st.subheader("Preview of Uploaded Data")
             st.dataframe(new_data.head(), use_container_width=True)
@@ -1478,11 +1657,17 @@ elif section == "Help Desk":
             ticket_id = "MS-" + str(uuid.uuid4())[:8].upper()
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-            file_name = None
+            attachment_path = None
+            attachment_display = None
             if uploaded_file is not None:
-                file_name = f"{ticket_id}_{uploaded_file.name}"
-                with open(file_name, "wb") as f:
-                    f.write(uploaded_file.getbuffer())
+                file_bytes = uploaded_file.getbuffer()
+                attachment_path, attachment_display, attach_err = save_helpdesk_attachment(
+                    file_bytes, uploaded_file.name
+                )
+                if attach_err:
+                    st.error(attach_err)
+                    attachment_path = None
+                    attachment_display = None
 
             ticket_data = {
                 "Ticket ID": ticket_id,
@@ -1495,7 +1680,8 @@ elif section == "Help Desk":
                 "Hazard Level": hazard_level,
                 "Location": location,
                 "Description": description,
-                "Attachment": file_name,
+                "Attachment": attachment_path,
+                "Attachment_Display": attachment_display,
                 "Status": "Open"
             }
 

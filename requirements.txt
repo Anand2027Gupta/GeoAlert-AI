@@ -1,8 +1,8 @@
-streamlit 
-pandas 
-scikit-learn 
-joblib 
-numpy 
-matplotlib
-feedparser
-plotly
+streamlit==1.43.0
+pandas==2.2.2
+scikit-learn==1.7.2
+joblib==1.4.0
+numpy>=2.0,<2.2
+matplotlib>=3.9,<3.10
+feedparser==6.0.14
+plotly==5.18.0
