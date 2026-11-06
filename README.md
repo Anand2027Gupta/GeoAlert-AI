@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # AI-Based-Rockfall-Prediction-And-Alert-System
 
 AI-powered system for predicting rockfalls and sending real-time alerts in open pit mines using sensor data and machine learning.
@@ -200,3 +201,6 @@ GeoAlert AI/
 │   └── test_attachments.py
 └── *.ipynb               # Jupyter notebooks (training/analysis)
 
+=======
+# GeoAlert-AI
+>>>>>>> 77bc81e20ee8c23e2e3324c58faa05856dd0d79f
