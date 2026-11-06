@@ -1,0 +1,238 @@
+@import "tailwindcss";
+
+@theme {
+  --color-surface: #0d1322;
+  --color-on-surface: #dde2f8;
+  --color-primary: #ffb690;
+  --color-on-primary: #552100;
+  --color-primary-container: #f97316;
+  --color-on-primary-container: #582200;
+  --color-outline: #a78b7d;
+  --color-outline-variant: #584237;
+  --color-error: #ffb4ab;
+  --color-on-error: #690005;
+  --color-error-container: #93000a;
+  --color-on-error-container: #ffdad6;
+  --color-warning: #F59E0B;
+  --color-secondary: #7bd0ff;
+  --color-on-secondary: #00354a;
+  --color-secondary-container: #00a6e0;
+  --color-on-secondary-container: #00374d;
+  --color-tertiary: #4ae176;
+  --color-on-tertiary: #003915;
+  --color-tertiary-container: #00b251;
+  --color-on-tertiary-container: #003b16;
+  --color-surface-container: #191f2f;
+  --color-surface-container-high: #242a3a;
+  --color-surface-container-highest: #2f3445;
+  --color-surface-container-low: #151b2b;
+  --color-surface-container-lowest: #080e1d;
+  --color-surface-bright: #33394a;
+  --color-surface-dim: #0d1322;
+  --color-surface-tint: #ffb690;
+  --color-background: #0d1322;
+  --color-on-background: #dde2f8;
+  --color-inverse-surface: #2a3040;
+  --color-inverse-on-surface: #2a3040;
+  --color-inverse-primary: #9d4300;
+
+  --radius-DEFAULT: 0.25rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-full: 9999px;
+
+  --spacing-space-xs: 0.25rem;
+  --spacing-space-sm: 0.5rem;
+  --spacing-space-md: 0.75rem;
+  --spacing-space-lg: 1rem;
+  --spacing-space-xl: 1.5rem;
+  --spacing-gutter: 0.75rem;
+  --spacing-gutter-desktop: 1rem;
+  --spacing-margin: 1rem;
+  --spacing-margin-desktop: 1.5rem;
+
+  --font-body: "Inter", sans-serif;
+  --font-headline: "Inter", sans-serif;
+  --font-label: "JetBrains Mono", monospace;
+
+  --text-body-lg: 15px;
+  --text-body-lg--line-height: 22px;
+  --text-body-lg--font-weight: 400;
+  --text-body-sm: 12px;
+  --text-body-sm--line-height: 16px;
+  --text-body-sm--font-weight: 400;
+  --text-headline-md: 18px;
+  --text-headline-md--line-height: 24px;
+  --text-headline-md--letter-spacing: -0.005em;
+  --text-headline-md--font-weight: 600;
+  --text-headline-xl-mobile: 24px;
+  --text-headline-xl-mobile--line-height: 32px;
+  --text-headline-xl-mobile--letter-spacing: -0.01em;
+  --text-headline-xl-mobile--font-weight: 700;
+  --text-headline-lg: 24px;
+  --text-headline-lg--line-height: 32px;
+  --text-headline-lg--letter-spacing: -0.01em;
+  --text-headline-lg--font-weight: 600;
+  --text-label-sm: 10px;
+  --text-label-sm--line-height: 12px;
+  --text-label-sm--letter-spacing: 0.05em;
+  --text-label-sm--font-weight: 600;
+  --text-body-md: 13px;
+  --text-body-md--line-height: 18px;
+  --text-body-md--font-weight: 400;
+  --text-headline-xl: 32px;
+  --text-headline-xl--line-height: 40px;
+  --text-headline-xl--letter-spacing: -0.02em;
+  --text-headline-xl--font-weight: 700;
+  --text-label-lg: 13px;
+  --text-label-lg--line-height: 16px;
+  --text-label-lg--letter-spacing: 0.02em;
+  --text-label-lg--font-weight: 500;
+  --text-label-md: 11px;
+  --text-label-md--line-height: 14px;
+  --text-label-md--letter-spacing: 0.04em;
+  --text-label-md--font-weight: 500;
+
+  --animation-pulse: pulse 2s ease infinite;
+  --animation-spin: spin 1s linear infinite;
+  --animation-ping: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@layer base {
+  html,
+  body {
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    overscroll-behavior: none;
+  }
+  body {
+    @apply bg-surface text-on-surface antialiased min-h-screen flex flex-col;
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+    line-height: 18px;
+  }
+  #root {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .pt-safe {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #0d1322;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #242a3a;
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #33394a;
+  }
+}
+
+@layer components {
+  .scada-card {
+    @apply bg-surface-container border border-outline rounded-lg p-space-md;
+  }
+  .scada-card-elevated {
+    @apply bg-surface-container-high border border-outline rounded-xl p-space-md shadow-md;
+  }
+  .scada-badge {
+    @apply inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border;
+  }
+  .scada-badge-critical {
+    @apply inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border bg-[rgba(239,68,68,0.12)] border-[#EF4444] text-[#EF4444];
+  }
+  .scada-badge-warning {
+    @apply inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border bg-[rgba(245,158,11,0.12)] border-[#F59E0B] text-[#F59E0B];
+  }
+  .scada-badge-nominal {
+    @apply inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border bg-[rgba(34,197,94,0.12)] border-[#22C55E] text-[#22C55E];
+  }
+  .scada-btn {
+    @apply inline-flex items-center justify-center gap-1.5 rounded border border-outline bg-transparent px-space-md py-1.5 text-on-surface font-medium hover:bg-surface-container-high hover:border-primary hover:text-primary transition-colors;
+  }
+  .scada-btn-primary {
+    @apply inline-flex items-center justify-center gap-1.5 rounded border border-primary bg-primary text-on-primary px-space-md py-1.5 font-medium hover:bg-[#f97316] hover:border-[#f97316] transition-colors;
+  }
+  .scada-btn-error {
+    @apply inline-flex items-center justify-center gap-1.5 rounded border border-[#dc2626] bg-[#EF4444] text-white px-space-md py-1.5 font-medium hover:bg-[#dc2626] hover:border-[#dc2626] transition-colors;
+  }
+  .scada-input {
+    @apply w-full rounded border border-outline bg-surface-container py-1.5 px-space-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary transition-colors;
+  }
+  .scada-select {
+    @apply w-full rounded border border-outline bg-surface-container py-1.5 px-space-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary transition-colors appearance-none;
+  }
+  .scada-section-header {
+    @apply flex items-center justify-between mb-2;
+  }
+  .scada-page-title {
+    font-family: var(--font-headline);
+    font-size: var(--text-headline-md);
+    line-height: var(--text-headline-md--line-height);
+    letter-spacing: var(--text-headline-md--letter-spacing);
+    font-weight: var(--text-headline-md--font-weight);
+    color: var(--color-on-surface);
+    @apply tracking-tight leading-none;
+  }
+  .scada-page-subtitle {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    line-height: var(--text-body-sm--line-height);
+    font-weight: var(--text-body-sm--font-weight);
+    color: var(--color-on-surface-variant);
+  }
+  .scada-table {
+    @apply w-full border-collapse border border-outline;
+  }
+  .scada-table th {
+    @apply bg-surface-container-low border border-outline text-on-surface text-[11px] uppercase font-bold px-2 py-2 text-left;
+  }
+  .scada-table td {
+    @apply border border-outline text-on-surface px-2 py-2 text-[13px];
+  }
+  .scada-table tr:hover {
+    @apply bg-surface-container-high;
+  }
+  .pulse-highlight {
+    position: relative;
+  }
+  .pulse-highlight::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 1px solid #EF4444;
+    opacity: 0.3;
+    animation: pulse 2s ease infinite;
+    pointer-events: none;
+    border-radius: inherit;
+  }
+  @keyframes pulse {
+    0% { opacity: 0.3; }
+    50% { opacity: 0.5; }
+    100% { opacity: 0.3; }
+  }
+  .animate-pulse-dot {
+    animation: pulse 2s ease infinite;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}

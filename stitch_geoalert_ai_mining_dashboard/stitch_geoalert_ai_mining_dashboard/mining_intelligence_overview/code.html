@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "on-primary-container": "#582200", "secondary-container": "#00a6e0", "surface-container-high": "#242a3a", "on-background": "#dde2f8", "on-primary-fixed-variant": "#783200", "on-error": "#690005", "primary": "#ffb690", "on-tertiary-container": "#003b16", "on-tertiary-fixed-variant": "#005321", "secondary-fixed": "#c4e7ff", "secondary": "#7bd0ff", "on-primary": "#552100", "primary-fixed": "#ffdbca", "on-surface": "#dde2f8", "surface-container-highest": "#2f3445", "inverse-on-surface": "#2a3040", "on-primary-fixed": "#341100", "surface-tint": "#ffb690", "on-secondary-fixed-variant": "#004c69", "error": "#ffb4ab", "on-secondary": "#00354a", "surface-container": "#191f2f", "outline-variant": "#584237", "on-surface-variant": "#e0c0b1", "inverse-surface": "#dde2f8", "on-tertiary-fixed": "#002109", "on-secondary-fixed": "#001e2c", "primary-fixed-dim": "#ffb690", "surface": "#0d1322", "error-container": "#93000a", "surface-container-low": "#151b2b", "surface-container-lowest": "#080e1d", "primary-container": "#f97316", "surface-dim": "#0d1322", "tertiary-fixed-dim": "#4ae176", "on-tertiary": "#003915", "tertiary-fixed": "#6bff8f", "on-secondary-container": "#00374d", "surface-variant": "#2f3445", "secondary-fixed-dim": "#7bd0ff", "tertiary": "#4ae176", "outline": "#a78b7d", "background": "#0d1322", "surface-bright": "#33394a", "tertiary-container": "#00b251", "inverse-primary": "#9d4300", "on-error-container": "#ffdad6" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "space-md": "0.75rem", "gutter-desktop": "1rem", "gutter": "0.75rem", "space-xs": "0.25rem", "space-sm": "0.5rem", "space-xl": "1.5rem", "margin-desktop": "1.5rem", "margin": "1rem", "space-lg": "1rem" }, fontFamily: { "body-lg": ["Inter"], "body-sm": ["Inter"], "headline-md": ["Inter"], "headline-xl-mobile": ["Inter"], "label-sm": ["JetBrains Mono"], "headline-lg": ["Inter"], "body-md": ["Inter"], "headline-xl": ["Inter"], "label-lg": ["JetBrains Mono"], "label-md": ["JetBrains Mono"] }, fontSize: { "body-lg": ["15px", { "lineHeight": "22px", "fontWeight": "400" }], "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }], "headline-md": ["18px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "600" }], "headline-xl-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "label-sm": ["10px", { "lineHeight": "12px", "letterSpacing": "0.05em", "fontWeight": "600" }], "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "body-md": ["13px", { "lineHeight": "18px", "fontWeight": "400" }], "headline-xl": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "label-lg": ["13px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500" }], "label-md": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "500" }] } } } }</script><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface font-body-md text-on-surface antialiased min-h-screen flex flex-col"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.4)]"><div class="h-16 px-gutter flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm"><button aria-label="Toggle Navigation Drawer" class="w-11 h-11 flex items-center justify-center rounded text-on-surface hover:text-primary active:bg-surface-container" onclick="document.getElementById('scada-drawer').classList.toggle('-translate-x-full')" type="button"><span class="material-symbols-outlined text-[24px]">menu</span></button><img alt="GeoAlert AI Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VmrHHBtuimom0dJKmKl0QNf7IZY0Knjw47so3IWM7SZd8E1uBjGrcXvPPGA49tTGYxb1aS9fwnrvyR5-VesOalT-YjBDresAZSUwM8BNFkFXsEgjUThzBtbDPOPXo-NFznd1DecI3goSoNEQhdMy451wjeVE8rW3tTZ3s0Xe-Kc2r-rrbrPP5uPvWvZqMRb3IbssygU88rIlypz1aTsO65WdtNQNL2Q4z71DISXAJvpLF-u8vljswP"/><div class="flex flex-col"><div class="flex items-center gap-1"><span class="font-headline-md text-headline-md tracking-tight uppercase text-on-surface leading-none">GEOALERT AI</span></div><span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">ROCKFALL INTELLIGENCE</span></div></div><div class="flex items-center gap-space-xs"><div class="hidden xs:flex items-center gap-1.5 px-space-sm py-0.5 rounded bg-surface-container-high text-secondary font-label-sm text-label-sm uppercase tracking-wider"><span class="w-1.5 h-1.5 rounded-full bg-tertiary animate-pulse"></span><span>OPEN-PIT | NB-4B</span></div><a aria-label="Alerts" class="w-11 h-11 flex items-center justify-center rounded relative text-on-surface hover:text-primary active:bg-surface-container" data-path="alerts-and-notifications" href="#"><span class="material-symbols-outlined text-[22px]">notifications</span><span class="absolute top-2 right-2 w-4 h-4 bg-primary-container text-on-primary-container rounded-full font-label-sm text-[9px] flex items-center justify-center font-bold">3</span></a><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><div class="fixed inset-y-0 left-0 w-80 max-w-[85vw] bg-surface-container-lowest z-[60] transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col shadow-[4px_0_24px_rgba(0,0,0,0.8)]" id="scada-drawer"><div class="pt-safe px-gutter py-space-md bg-surface-container-low flex items-center justify-between"><div class="flex items-center gap-space-sm"><img alt="GeoAlert AI Logo" class="h-7 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VmrHHBtuimom0dJKmKl0QNf7IZY0Knjw47so3IWM7SZd8E1uBjGrcXvPPGA49tTGYxb1aS9fwnrvyR5-VesOalT-YjBDresAZSUwM8BNFkFXsEgjUThzBtbDPOPXo-NFznd1DecI3goSoNEQhdMy451wjeVE8rW3tTZ3s0Xe-Kc2r-rrbrPP5uPvWvZqMRb3IbssygU88rIlypz1aTsO65WdtNQNL2Q4z71DISXAJvpLF-u8vljswP"/><div class="flex flex-col"><span class="font-headline-md text-headline-md text-on-surface">GEOALERT AI</span><span class="font-label-sm text-label-sm text-primary">SYSTEM DIRECTORY</span></div></div><button class="w-11 h-11 flex items-center justify-center text-on-surface-variant hover:text-on-surface" onclick="document.getElementById('scada-drawer').classList.add('-translate-x-full')" type="button"><span class="material-symbols-outlined text-[22px]">close</span></button></div><div class="px-gutter py-space-xs bg-surface-container"><div class="flex items-center justify-between text-secondary font-label-sm text-label-sm uppercase"><span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-tertiary"></span>OPEN-PIT | NORTH BENCH 4B</span><span class="text-on-surface-variant font-label-sm">GRID: Z-12</span></div></div><div class="flex-1 overflow-y-auto px-gutter py-space-sm space-y-0.5"><div class="px-space-sm py-space-xs font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Operational Modules</div><a class="flex items-center gap-space-md px-space-md py-space-sm rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container active:bg-surface-container-high transition-colors" data-path="overview" href="#"><span class="material-symbols-outlined text-[20px]">grid_view</span><span class="font-body-md text-body-md font-medium">Overview (Dashboard)</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container active:bg-surface-container-high transition-colors" data-path="open-pit-monitoring" href="#"><span class="material-symbols-outlined text-[20px]">landscape</span><span class="font-body-md text-body-md font-medium">Open-Pit Monitoring</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container active:bg-surface-container-high transition-colors" data-path="underground-monitoring" href="#"><span class="material-symbols-outlined text-[20px]">radar</span><span class="font-body-md text-body-md font-medium">Underground Monitoring</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container active:bg-surface-container-high transition-colors" data-path="risk-predictions" href="#"><span class="material-symbols-outlined text-[20px]">analytics</span><span class="font-body-md text-body-md font-medium">Risk Predictions</span></a><a class="flex items-center justify-between px-space-md py-space-sm rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container active:bg-surface-container-high transition-colors" data-path="alerts-and-notifications" href="#"><div class="flex items-center gap-space-md"><span class="material-symbols-outlined text-[20px]">crisis_alert</span><span class="font-body-md text-body-md font-medium">Alerts &amp; Notifications</span></div><span class="px-1.5 py-0.5 rounded bg-primary-container text-on-primary-container font-label-sm text-label-sm font-bold">3 CRIT</span></a><div class="pt-space-sm px-space-sm py-space-xs font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Data &amp; Utilities</div><a class="flex items-center gap-space-md px-space-md py-space-sm rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container active:bg-surface-container-high transition-colors" data-path="data-and-uploads" href="#"><span class="material-symbols-outlined text-[20px]">upload_file</span><span class="font-body-md text-body-md font-medium">Data &amp; Uploads</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container active:bg-surface-container-high transition-colors" data-path="reports-and-analytics" href="#"><span class="material-symbols-outlined text-[20px]">summarize</span><span class="font-body-md text-body-md font-medium">Reports &amp; Analytics</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container active:bg-surface-container-high transition-colors" data-path="help-desk" href="#"><span class="material-symbols-outlined text-[20px]">support_agent</span><span class="font-body-md text-body-md font-medium">Help Desk</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container active:bg-surface-container-high transition-colors" data-path="system-settings" href="#"><span class="material-symbols-outlined text-[20px]">settings</span><span class="font-body-md text-body-md font-medium">System / Settings</span></a></div><div class="pb-safe p-gutter bg-surface-container-low space-y-1"><div class="flex items-center justify-between text-on-surface font-label-sm text-label-sm"><span class="text-tertiary flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>STATUS: OPERATIONAL v2.4.1</span><span class="text-secondary font-label-sm">LAT: 42ms</span></div><div class="flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm"><span>OFFLINE CACHE: READY</span><span class="material-symbols-outlined text-[14px] text-tertiary">cloud_done</span></div></div></div><main class="flex-1 flex flex-col relative w-full pt-16 pb-20 bg-surface min-h-[calc(100vh-5rem)]"><div class="flex flex-col w-full text-on-surface">
+<!-- Top Ticker / Telemetry Stream -->
+<div class="w-full bg-surface-container-lowest px-gutter py-space-xs flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-1.5 min-w-0">
+<span class="w-2 h-2 rounded-full bg-tertiary animate-pulse shrink-0"></span>
+<span class="font-label-sm text-label-sm text-secondary truncate tracking-wider">SENSOR FEED: SECTOR 4B TELEMETRY (LIVE)</span>
+</div>
+<div class="flex items-center gap-2 shrink-0 font-label-sm text-label-sm text-on-surface-variant">
+<span>SYNC 0.4s</span>
+<span class="material-symbols-outlined text-[13px] text-tertiary">wifi_tethering</span>
+</div>
+</div>
+<div class="p-gutter space-y-space-md">
+<!-- Header Context & Domain Toggle -->
+<div class="space-y-space-xs">
+<div class="flex items-baseline justify-between">
+<div>
+<h1 class="font-headline-xl-mobile text-headline-xl-mobile text-on-surface font-bold tracking-tight">Mining Intelligence</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Rockfall Risk Monitoring &amp; Predictive Analytics</p>
+</div>
+<div class="bg-surface-container-high px-2 py-1 rounded text-right">
+<span class="font-label-sm text-[9px] text-on-surface-variant block uppercase">PIT CODE</span>
+<span class="font-label-md text-label-md text-primary font-bold">NB-4B::Z12</span>
+</div>
+</div>
+<!-- Segmented Mining Mode Switcher -->
+<div class="grid grid-cols-2 p-1 rounded-lg bg-surface-container-low mt-space-sm gap-1">
+<button class="flex items-center justify-center gap-1.5 py-1.5 px-space-sm rounded bg-surface-container-high text-primary shadow-sm font-label-md text-label-md tracking-wider transition-all" id="btn-openpit" type="button">
+<span class="material-symbols-outlined text-[16px]">landscape</span>
+<span>OPEN-PIT (ACTIVE)</span>
+</button>
+<button class="flex items-center justify-center gap-1.5 py-1.5 px-space-sm rounded text-on-surface-variant hover:text-on-surface font-label-md text-label-md tracking-wider transition-all" id="btn-underground" type="button">
+<span class="material-symbols-outlined text-[16px]">radar</span>
+<span>UNDERGROUND</span>
+</button>
+</div>
+</div>
+<!-- 2x2 Operational KPI Metric Grid -->
+<div class="grid grid-cols-2 gap-space-sm">
+<!-- Card 1: Critical Risk -->
+<div class="bg-surface-container p-space-md rounded-lg flex flex-col justify-between shadow-sm relative overflow-hidden">
+<div class="absolute -right-3 -bottom-3 opacity-10 pointer-events-none text-error">
+<span class="material-symbols-outlined text-[64px]">warning</span>
+</div>
+<div>
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Current Risk</span>
+<span class="flex h-2 w-2 relative">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-error opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-error"></span>
+</span>
+</div>
+<div class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-error-container text-on-error-container font-label-sm text-label-sm font-bold">
+<span class="material-symbols-outlined text-[12px]">report_problem</span>
+<span>CRITICAL 84%</span>
+</div>
+</div>
+<div class="mt-space-sm">
+<span class="font-label-sm text-[10px] text-error flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[12px]">trending_up</span>
+            +12% Seismic Shift
+          </span>
+</div>
+</div>
+<!-- Card 2: Latest Prediction -->
+<div class="bg-surface-container p-space-md rounded-lg flex flex-col justify-between shadow-sm">
+<div>
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Latest ML Pred</span>
+<span class="material-symbols-outlined text-[16px] text-primary">psychology</span>
+</div>
+<div class="font-headline-md text-headline-md text-primary font-bold leading-tight uppercase line-clamp-2">
+            SLOPE FAILURE PROBABLE
+          </div>
+</div>
+<div class="mt-space-sm">
+<span class="font-label-sm text-[10px] text-on-surface-variant font-mono block">
+            TS: 14:32:08 UTC
+          </span>
+</div>
+</div>
+<!-- Card 3: Active Alerts -->
+<div class="bg-surface-container p-space-md rounded-lg flex flex-col justify-between shadow-sm">
+<div>
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Active Alerts</span>
+<span class="material-symbols-outlined text-[16px] text-secondary">notifications_active</span>
+</div>
+<div class="flex items-baseline gap-1">
+<span class="font-headline-md text-headline-md text-on-surface font-bold">3</span>
+<span class="font-label-sm text-error font-bold">CRIT</span>
+<span class="text-on-surface-variant">/</span>
+<span class="font-headline-md text-headline-md text-on-surface font-bold">2</span>
+<span class="font-label-sm text-primary font-bold">WARN</span>
+</div>
+</div>
+<div class="mt-space-sm">
+<span class="font-label-sm text-[10px] text-primary-fixed-dim block truncate">
+            1 Evacuation Pre-warning
+          </span>
+</div>
+</div>
+<!-- Card 4: Monitoring Telemetry -->
+<div class="bg-surface-container p-space-md rounded-lg flex flex-col justify-between shadow-sm">
+<div>
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Telemetry</span>
+<span class="material-symbols-outlined text-[16px] text-tertiary">sensors</span>
+</div>
+<div class="font-headline-md text-headline-md text-tertiary font-bold tracking-tight">
+            99.4%
+            <span class="font-label-sm text-label-sm text-on-surface font-normal">Nominal</span>
+</div>
+</div>
+<div class="mt-space-sm">
+<span class="font-label-sm text-[10px] text-on-surface-variant block truncate">
+            48 Geophones / 12 InSAR
+          </span>
+</div>
+</div>
+</div>
+<!-- Displacement Velocity & Threshold Trend Chart -->
+<div class="bg-surface-container p-space-md rounded-lg shadow-sm space-y-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-primary">show_chart</span>
+<span class="font-headline-md text-headline-md text-on-surface font-semibold">Risk Displacement Velocity</span>
+</div>
+<div class="flex items-center bg-surface-container-high rounded p-0.5 font-label-sm text-[10px]">
+<button class="px-2 py-0.5 rounded bg-surface-container text-primary font-bold" type="button">24H</button>
+<button class="px-2 py-0.5 rounded text-on-surface-variant hover:text-on-surface" type="button">7D</button>
+</div>
+</div>
+<div class="flex items-center justify-between font-label-sm text-label-sm text-on-surface-variant px-1">
+<span>PEAK: <strong class="text-error font-mono">18.2 mm/hr</strong></span>
+<span>SAFE CRIT: <strong class="text-primary font-mono">&lt; 15.0 mm/hr</strong></span>
+</div>
+<!-- Tactical SVG Line Graph -->
+<div class="relative w-full h-44 bg-surface-container-lowest rounded-md p-2 flex flex-col justify-end">
+<svg class="w-full h-full overflow-visible" preserveaspectratio="none" viewbox="0 0 340 140">
+<defs>
+<lineargradient id="velocityFill" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#f97316" stop-opacity="0.35"></stop>
+<stop offset="70%" stop-color="#f97316" stop-opacity="0.05"></stop>
+<stop offset="100%" stop-color="#f97316" stop-opacity="0"></stop>
+</lineargradient>
+<lineargradient id="criticalZone" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#ffb4ab" stop-opacity="0.25"></stop>
+<stop offset="100%" stop-color="#ffb4ab" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<!-- Grid Lines -->
+<line stroke="#242a3a" stroke-dasharray="3,3" stroke-width="1" x1="0" x2="340" y1="20" y2="20"></line>
+<line stroke="#242a3a" stroke-dasharray="3,3" stroke-width="1" x1="0" x2="340" y1="60" y2="60"></line>
+<line stroke="#242a3a" stroke-dasharray="3,3" stroke-width="1" x1="0" x2="340" y1="100" y2="100"></line>
+<!-- Critical Alarm Threshold Baseline (15 mm/hr = Y: 42) -->
+<rect fill="url(#criticalZone)" height="42" width="340" x="0" y="0"></rect>
+<line stroke="#ffb4ab" stroke-dasharray="4,4" stroke-width="1.5" x1="0" x2="340" y1="42" y2="42"></line>
+<text fill="#ffb4ab" font-family="JetBrains Mono" font-size="8" font-weight="bold" x="5" y="38">THRESHOLD: 15.0 mm/hr</text>
+<!-- Area under curve -->
+<path d="M0,118 Q30,112 60,115 T120,95 T180,90 T230,70 T270,30 T300,18 T320,38 T340,55 L340,140 L0,140 Z" fill="url(#velocityFill)"></path>
+<!-- Displacement Curve Line -->
+<path d="M0,118 Q30,112 60,115 T120,95 T180,90 T230,70 T270,30 T300,18 T320,38 T340,55" fill="none" stroke="#f97316" stroke-linecap="round" stroke-width="2.5"></path>
+<!-- Anomaly Peak Point Indicator -->
+<circle cx="300" cy="18" fill="#ffb4ab" r="4.5" stroke="#080e1d" stroke-width="2"></circle>
+<circle class="animate-ping" cx="300" cy="18" fill="none" opacity="0.6" r="8" stroke="#ffb4ab" stroke-width="1" style="transform-origin: 300px 18px;"></circle>
+<text fill="#ffb4ab" font-family="JetBrains Mono" font-size="9" font-weight="bold" x="250" y="14">18.2 mm/hr [!FAIL CRIT]</text>
+</svg>
+<!-- Time Axis Labels -->
+<div class="flex justify-between items-center text-on-surface-variant font-label-sm text-[9px] pt-1">
+<span>00:00</span>
+<span>06:00</span>
+<span>12:00</span>
+<span>14:32 (NOW)</span>
+<span>20:00</span>
+</div>
+</div>
+<!-- Chart Legend -->
+<div class="flex items-center justify-center gap-space-lg pt-1 text-on-surface-variant font-label-sm text-[10px]">
+<div class="flex items-center gap-1.5">
+<span class="w-3 h-1 bg-primary-container rounded"></span>
+<span>Displacement Vector</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-3 h-0.5 bg-error border-b border-dashed"></span>
+<span>Safety Boundary (15mm/h)</span>
+</div>
+</div>
+</div>
+<!-- Pit Geospatial Scan Snapshot -->
+<div class="bg-surface-container rounded-lg p-space-md shadow-sm space-y-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-secondary">satellite_alt</span>
+<span class="font-headline-md text-headline-md text-on-surface font-semibold">Geospatial LiDAR Heatmap</span>
+</div>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-surface-container-high text-secondary">Z-12 SECTOR</span>
+</div>
+<div class="relative w-full h-36 rounded overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="High-contrast satellite thermal LiDAR elevation scan of an open-pit diamond and copper mine wall with bright orange and red heat map clusters indicating high rock displacement and stress zones along the North Bench, dark navy blue geotechnical telemetry style, SCADA overlay coordinates." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBi10AdF9jDrueFcVPX2SiRNOIP5B5EIB958ZzfGgYm_UzobbFVIR6Lb0k1v1kIUprMhrE_4qiz-sNo-31EzWyL6JwqzeiZO2KLNhBVHwVoN9uStZrmGgIYx5n5iw2FXFM08WNEDIT_zRruMRRwSTQwzUZuV6STFrXlIyJ7INJKalmSPsbGmb6XrmHGkAuuSvVXx9gug3CYQAogetiKXacNmijIxWuwPFwT9lERSrYPLHHFVgucYck"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest/90 via-transparent to-transparent flex items-end p-2.5 justify-between">
+<div>
+<span class="font-label-sm text-[9px] text-on-surface-variant block uppercase">TARGET CRUST</span>
+<span class="font-label-md text-label-md text-on-surface font-bold">NORTH CREST BENCH 4B</span>
+</div>
+<a class="px-2.5 py-1 rounded bg-secondary text-on-secondary font-label-sm text-label-sm font-semibold flex items-center gap-1" data-path="open-pit-monitoring" href="#">
+<span>FULL 3D</span>
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+<!-- Geological Risk Distribution Breakdown -->
+<div class="bg-surface-container p-space-md rounded-lg shadow-sm space-y-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-primary">pie_chart</span>
+<span class="font-headline-md text-headline-md text-on-surface font-semibold">Geotechnical Subsystems</span>
+</div>
+<span class="font-label-sm text-[10px] text-on-surface-variant">MULTI-ARRAY</span>
+</div>
+<div class="space-y-space-sm">
+<!-- Metric 1: Slope Stability -->
+<div class="space-y-1">
+<div class="flex justify-between font-label-sm text-label-sm">
+<span class="text-on-surface flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px] text-primary">landscape</span>
+              Slope Stability (Kinematic)
+            </span>
+<span class="text-primary font-bold">78% High Risk</span>
+</div>
+<div class="w-full h-1.5 rounded-full bg-surface-container-lowest overflow-hidden">
+<div class="h-full rounded-full bg-primary-container" style="width: 78%"></div>
+</div>
+</div>
+<!-- Metric 2: Pore Water Pressure -->
+<div class="space-y-1">
+<div class="flex justify-between font-label-sm text-label-sm">
+<span class="text-on-surface flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px] text-secondary">water_drop</span>
+              Pore Water Pressure
+            </span>
+<span class="text-secondary font-bold">64% Warn</span>
+</div>
+<div class="w-full h-1.5 rounded-full bg-surface-container-lowest overflow-hidden">
+<div class="h-full rounded-full bg-secondary-container" style="width: 64%"></div>
+</div>
+</div>
+<!-- Metric 3: Micro-seismic Energy -->
+<div class="space-y-1">
+<div class="flex justify-between font-label-sm text-label-sm">
+<span class="text-on-surface flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px] text-error">vibration</span>
+              Micro-seismic Energy Accumulation
+            </span>
+<span class="text-error font-bold">89% Critical</span>
+</div>
+<div class="w-full h-1.5 rounded-full bg-surface-container-lowest overflow-hidden">
+<div class="h-full rounded-full bg-error" style="width: 89%"></div>
+</div>
+</div>
+<!-- Metric 4: Joint Dip Orientation -->
+<div class="space-y-1">
+<div class="flex justify-between font-label-sm text-label-sm">
+<span class="text-on-surface flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px] text-tertiary">polyline</span>
+              Joint Dip Orientation
+            </span>
+<span class="text-tertiary font-bold">45% Normal</span>
+</div>
+<div class="w-full h-1.5 rounded-full bg-surface-container-lowest overflow-hidden">
+<div class="h-full rounded-full bg-tertiary-container" style="width: 45%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Recent High-Severity Alerts List -->
+<div class="space-y-space-xs">
+<div class="flex items-center justify-between px-1">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-error">warning</span>
+<span class="font-headline-md text-headline-md text-on-surface font-semibold">Priority Event Stream</span>
+</div>
+<a class="font-label-sm text-label-sm text-secondary hover:underline" data-path="alerts-and-notifications" href="#">VIEW ALL (5)</a>
+</div>
+<div class="space-y-space-xs">
+<!-- Alert Item 1: Critical -->
+<div class="p-space-md rounded-lg bg-surface-container flex items-start gap-space-sm shadow-sm transition-transform active:scale-[0.99]">
+<div class="p-2 rounded bg-error-container text-on-error-container shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[18px]">emergency_home</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-2">
+<span class="px-1.5 py-0.5 rounded font-label-sm text-[9px] bg-error-container text-on-error-container font-bold uppercase">CRITICAL</span>
+<span class="font-label-sm text-[10px] text-on-surface-variant font-mono">12m ago</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface font-semibold mt-1 leading-snug">North Bench 4B: Accelerating Crest Cracking detected by InSAR</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5 truncate">Sector Z-12 Prism P-09 velocity: +3.2 mm/hr surge</p>
+</div>
+</div>
+<!-- Alert Item 2: Warning -->
+<div class="p-space-md rounded-lg bg-surface-container flex items-start gap-space-sm shadow-sm transition-transform active:scale-[0.99]">
+<div class="p-2 rounded bg-primary-container text-on-primary-container shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[18px]">cyclone</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-2">
+<span class="px-1.5 py-0.5 rounded font-label-sm text-[9px] bg-primary-container text-on-primary-container font-bold uppercase">WARNING</span>
+<span class="font-label-sm text-[10px] text-on-surface-variant font-mono">45m ago</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface font-semibold mt-1 leading-snug">Haul Road Cut 2: Pore pressure surge past 220 kPa</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5 truncate">Subsurface piezometer array PR-04 above seasonal baseline</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Tactical Quick Action Command Center -->
+<div class="space-y-space-sm pt-space-xs">
+<div class="flex items-center gap-1.5 px-1">
+<span class="material-symbols-outlined text-[16px] text-primary">bolt</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Tactical Field Controls</span>
+</div>
+<div class="space-y-space-xs">
+<!-- Action 1: Run ML Inference -->
+<button class="w-full flex items-center justify-center gap-2 py-3 px-space-md rounded-lg bg-primary-container text-on-primary-container font-headline-md text-headline-md font-bold shadow-md hover:opacity-95 active:scale-[0.98] transition-all" id="btn-run-inference" type="button">
+<span class="material-symbols-outlined text-[20px]">smart_toy</span>
+<span>Run ML Risk Inference</span>
+</button>
+<!-- Secondary Actions in 2-column strip -->
+<div class="grid grid-cols-2 gap-space-xs">
+<!-- Action 2: Upload CSV -->
+<a class="flex items-center justify-center gap-1.5 py-2.5 px-space-sm rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-container-highest active:bg-surface-container font-label-md text-label-md font-medium shadow-sm transition-colors text-center" data-path="data-and-uploads" href="#">
+<span class="material-symbols-outlined text-[16px] text-secondary">upload_file</span>
+<span class="truncate">Upload Pit CSV</span>
+</a>
+<!-- Action 3: Export Incident Report -->
+<a class="flex items-center justify-center gap-1.5 py-2.5 px-space-sm rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-container-highest active:bg-surface-container font-label-md text-label-md font-medium shadow-sm transition-colors text-center" data-path="reports-and-analytics" href="#">
+<span class="material-symbols-outlined text-[16px] text-tertiary">summarize</span>
+<span class="truncate">Export Report</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+<!-- Interactive Client-side Script for Micro-Delight Feedback -->
+<script>
+    (function initDashboardInteractions() {
+      const openPitBtn = document.getElementById('btn-openpit');
+      const undergroundBtn = document.getElementById('btn-underground');
+      const mlBtn = document.getElementById('btn-run-inference');
+
+      if (openPitBtn && undergroundBtn) {
+        openPitBtn.addEventListener('click', function() {
+          openPitBtn.className = 'flex items-center justify-center gap-1.5 py-1.5 px-space-sm rounded bg-surface-container-high text-primary shadow-sm font-label-md text-label-md tracking-wider transition-all';
+          undergroundBtn.className = 'flex items-center justify-center gap-1.5 py-1.5 px-space-sm rounded text-on-surface-variant hover:text-on-surface font-label-md text-label-md tracking-wider transition-all';
+        });
+
+        undergroundBtn.addEventListener('click', function() {
+          undergroundBtn.className = 'flex items-center justify-center gap-1.5 py-1.5 px-space-sm rounded bg-surface-container-high text-secondary shadow-sm font-label-md text-label-md tracking-wider transition-all';
+          openPitBtn.className = 'flex items-center justify-center gap-1.5 py-1.5 px-space-sm rounded text-on-surface-variant hover:text-on-surface font-label-md text-label-md tracking-wider transition-all';
+        });
+      }
+
+      if (mlBtn) {
+        mlBtn.addEventListener('click', function() {
+          const originalHTML = mlBtn.innerHTML;
+          mlBtn.innerHTML = '<span class="material-symbols-outlined text-[20px] animate-spin">refresh</span><span>Computing Deep Hazard Mesh...</span>';
+          mlBtn.disabled = true;
+
+          setTimeout(function() {
+            mlBtn.innerHTML = '<span class="material-symbols-outlined text-[20px]">check_circle</span><span>Inference Complete: Model v4.8</span>';
+            mlBtn.classList.remove('bg-primary-container', 'text-on-primary-container');
+            mlBtn.classList.add('bg-tertiary-container', 'text-on-tertiary-container');
+
+            setTimeout(function() {
+              mlBtn.innerHTML = originalHTML;
+              mlBtn.disabled = false;
+              mlBtn.classList.remove('bg-tertiary-container', 'text-on-tertiary-container');
+              mlBtn.classList.add('bg-primary-container', 'text-on-primary-container');
+            }, 2400);
+          }, 1100);
+        });
+      }
+    })();
+  </script>
+</div></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-1px_12px_rgba(0,0,0,0.4)]" data-active-classes="text-primary font-bold"><div class="flex justify-around items-center h-20 px-gutter"><a aria-current="page" class="flex flex-col items-center justify-center gap-1 w-16 h-16 transition-colors text-primary font-bold" data-path="overview" href="#"><span class="material-symbols-outlined text-[22px]">dashboard</span><span class="font-label-sm text-label-sm">Overview</span></a><a class="flex flex-col items-center justify-center gap-1 w-16 h-16 text-on-surface-variant hover:text-on-surface transition-colors" data-path="open-pit-monitoring" href="#"><span class="material-symbols-outlined text-[22px]">landscape</span><span class="font-label-sm text-label-sm">Open-Pit</span></a><a class="flex flex-col items-center justify-center gap-1 w-16 h-16 text-on-surface-variant hover:text-on-surface transition-colors" data-path="risk-predictions" href="#"><span class="material-symbols-outlined text-[22px]">insights</span><span class="font-label-sm text-label-sm">Predictions</span></a><a class="flex flex-col items-center justify-center gap-1 w-16 h-16 text-on-surface-variant hover:text-on-surface transition-colors relative" data-path="alerts-and-notifications" href="#"><span class="material-symbols-outlined text-[22px]">warning</span><span class="absolute top-2 right-3 w-2 h-2 rounded-full bg-primary-container animate-ping"></span><span class="font-label-sm text-label-sm">Alerts</span></a><a class="flex flex-col items-center justify-center gap-1 w-16 h-16 text-on-surface-variant hover:text-on-surface transition-colors" data-path="system-settings" href="#"><span class="material-symbols-outlined text-[22px]">tune</span><span class="font-label-sm text-label-sm">Settings</span></a></div></nav></body></html>

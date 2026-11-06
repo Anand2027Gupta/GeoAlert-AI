@@ -1,0 +1,374 @@
+/* =============================================================================
+   Dark Industrial SCADA Theme — GeoAlert AI
+   Source of truth: stitch_geoalert_ai_mining_dashboard/ DESIGN.md + code.html
+   ============================================================================= */
+
+/* -- Page Background & Root Colors -- */
+:root {
+  --sb-surface: #0d1322;
+  --sb-on-surface: #dde2f8;
+  --sb-primary: #ffb690;
+  --sb-on-primary: #552100;
+  --sb-primary-container: #f97316;
+  --sb-outline: #a78b7d;
+  --sb-error: #ffb4ab;
+  --sb-warning: #F59E0B;
+  --sb-secondary: #7bd0ff;
+  --sb-secondary-container: #00a6e0;
+  --sb-surface-container: #191f2f;
+  --sb-surface-container-high: #242a3a;
+  --sb-on-background: #dde2f8;
+  --sb-inverse-surface: #2a3040;
+}
+/* -- Page Background -- */
+.stApp {
+  background-color: var(--sb-surface) !important;
+  color: var(--sb-on-surface) !important;
+}
+/* -- Sidebar -- */
+section[data-testid="stSidebar"] {
+  background-color: var(--sb-surface-container) !important;
+  border-right: 1px solid var(--sb-outline) !important;
+}
+section[data-testid="stSidebar"] .css-1d39kgk {
+  color: var(--sb-on-surface) !important;
+}
+/* Sidebar navigation links */
+section[data-testid="stSidebar"] a {
+  color: var(--sb-on-surface) !important;
+  text-decoration: none;
+}
+section[data-testid="stSidebar"] a:hover {
+  color: var(--sb-primary) !important;
+}
+/* -- Header/Title -- */
+.sticky-title h1 {
+  color: var(--sb-on-surface) !important;
+  font-family: "Inter", sans-serif !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.01em !important;
+}
+/* -- Main Content Area -- */
+.main .block-container {
+  background-color: var(--sb-surface) !important;
+  margin-top: 0 !important;
+}
+/* -- Buttons -- */
+.stButton > button {
+  font-family: "Inter", sans-serif !important;
+  font-weight: 500 !important;
+  border-radius: 0.25rem !important;
+  border: 1px solid var(--sb-outline) !important;
+  background-color: transparent !important;
+  color: var(--sb-on-surface) !important;
+}
+.stButton > button:hover {
+  background-color: var(--sb-surface-container-high) !important;
+  border-color: var(--sb-primary) !important;
+  color: var(--sb-primary) !important;
+}
+.stButton > button[kind="primary"] {
+  background-color: var(--sb-primary) !important;
+  color: var(--sb-on-primary) !important;
+  border-color: var(--sb-primary) !important;
+}
+.stButton > button[kind="primary"]:hover {
+  background-color: var(--sb-primary-container) !important;
+  color: var(--sb-on-primary-container) !important;
+}
+.stButton > button[kind="secondary"] {
+  background-color: var(--sb-surface-container) !important;
+  color: var(--sb-on-surface) !important;
+  border-color: var(--sb-outline) !important;
+}
+.stButton > button[kind="secondary"]:hover {
+  background-color: var(--sb-surface-container-high) !important;
+  border-color: var(--sb-primary) !important;
+  color: var(--sb-primary) !important;
+}
+.stButton > button[kind="secondary"]:active {
+  background-color: var(--sb-surface-container-high) !important;
+}
+/* -- Success/Warning/Error Buttons -- */
+.stButton > button[kind="success"] {
+  background-color: #28a745 !important;
+  color: white !important;
+  border-color: #28a745 !important;
+}
+.stButton > button[kind="success"]:hover {
+  background-color: #218838 !important;
+}
+.stButton > button[kind="error"] {
+  background-color: #dc3545 !important;
+  color: white !important;
+  border-color: #dc3545 !important;
+}
+.stButton > button[kind="error"]:hover {
+  background-color: #c82333 !important;
+}
+
+/* -- Metric Cards -- */
+.metric-card {
+  border-radius: 0.5rem !important;
+  padding: 1rem !important;
+  background-color: var(--sb-surface-container-high) !important;
+  border: 1px solid var(--sb-outline) !important;
+  margin-bottom: 0.75rem !important;
+  color: var(--sb-on-surface) !important;
+}
+.metric-card h5 {
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  color: var(--sb-on-surface-variant) !important;
+  margin-bottom: 0.25rem !important;
+}
+.metric-card p {
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  color: var(--sb-primary) !important;
+  margin: 0 !important;
+}
+
+/* -- Badges / Status Pill -- */
+.status-pill {
+  display: inline-block;
+  padding: 0.25em 0.5em !important;
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  border-radius: 0.25rem !important;
+  border: 1px solid !important;
+  font-family: "JetBrains Mono", monospace !important;
+}
+.pill-primary {
+  background-color: rgba(255, 182, 144, 0.15) !important;
+  color: var(--sb-on-primary) !important;
+  border-color: var(--sb-primary) !important;
+}
+.pill-warning {
+  background-color: rgba(245, 158, 11, 0.15) !important;
+  color: #92400e !important;
+  border-color: #F59E0B !important;
+}
+.pill-error {
+  background-color: rgba(255, 180, 171, 0.15) !important;
+  color: #93000a !important;
+  border-color: #ffb4ab !important;
+}
+.pill-success {
+  background-color: rgba(40, 167, 69, 0.15) !important;
+  color: #28a745 !important;
+  border-color: #28a745 !important;
+}
+.pill-info {
+  background-color: rgba(123, 208, 255, 0.15) !important;
+  color: var(--sb-secondary) !important;
+  border-color: var(--sb-secondary) !important;
+}
+
+/* -- Alert Severity Buttons -- */
+.severity-filter-btn {
+  font-family: "Inter", sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  padding: 0.5rem 0.75rem !important;
+  border-radius: 0.25rem !important;
+  border: 1px solid !important;
+  background-color: var(--sb-surface-container-high) !important;
+  color: var(--sb-on-surface) !important;
+  margin: 0 0.25rem 0.25rem !important;
+}
+.severity-filter-btn:hover {
+  border-color: var(--sb-primary) !important;
+  background-color: var(--sb-surface-container-high) !important;
+}
+.severity-filter-btn.active {
+  background-color: var(--sb-primary) !important;
+  color: var(--sb-on-primary) !important;
+}
+/* -- Tabs -- */
+.stTabs [data-baseweb="tab"] {
+  border-radius: 0.25rem !important;
+  border: 1px solid var(--sb-outline) !important;
+  background-color: var(--sb-surface-container) !important;
+  color: var(--sb-on-surface) !important;
+}
+.stTabs [data-baseweb="tab"]:hover {
+  border-color: var(--sb-primary) !important;
+  background-color: var(--sb-surface-container-high) !important;
+}
+.stTabs [data-baseweb="tab"][aria-selected="true"] {
+  background-color: var(--sb-primary) !important;
+  color: var(--sb-on-primary) !important;
+  border-color: var(--sb-primary) !important;
+}
+
+/* -- DataFrames / Tables -- */
+.dataframe {
+  color: var(--sb-on-surface) !important;
+}
+.dataframe th {
+  background-color: var(--sb-surface-container) !important;
+  border: 1px solid var(--sb-outline) !important;
+  color: var(--sb-on-surface) !important;
+}
+.dataframe td {
+  border: 1px solid var(--sb-outline) !important;
+  color: var(--sb-on-surface) !important;
+}
+
+/* -- Success/Error/Warning Messages -- */
+.stSuccess {
+  background-color: rgba(40, 167, 69, 0.15) !important;
+  border: 1px solid #28a745 !important;
+  color: #28a745 !important;
+}
+.stError {
+  background-color: rgba(220, 53, 69, 0.15) !important;
+  border: 1px solid #dc3545 !important;
+  color: #dc3545 !important;
+}
+.stWarning {
+  background-color: rgba(245, 158, 11, 0.15) !important;
+  border: 1px solid #F59E0B !important;
+  color: #F59E0B !important;
+}
+.stInfo {
+  background-color: rgba(123, 208, 255, 0.15) !important;
+  border: 1px solid var(--sb-secondary) !important;
+  color: var(--sb-secondary) !important;
+}
+
+/* -- Plotly Charts -- */
+.js-plotly-plot {
+  background-color: var(--sb-surface) !important;
+  color: var(--sb-on-surface) !important;
+}
+.js-plotly-plot .plotly .modebar {
+  background-color: var(--sb-surface-container) !important;
+}
+.js-plotly-plot .plotly .layer {
+  stroke: var(--sb-outline) !important;
+}
+
+/* -- File Uploader -- */
+.stFileUploader > div {
+  border: 2px dashed var(--sb-outline) !important;
+  border-radius: 0.5rem !important;
+  background-color: var(--sb-surface-container) !important;
+  color: var(--sb-on-surface) !important;
+}
+.stFileUploader > div > div {
+  color: var(--sb-on-surface) !important;
+}
+
+/* -- Radio Items -- */
+section[data-testid="stSidebar"] div[role="radiogroup"] label {
+  font-family: "Inter", sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  padding: 0.5rem 1rem !important;
+  border-radius: 0.5rem !important;
+  border: 1px solid var(--sb-outline) !important;
+  background-color: var(--sb-surface-container) !important;
+  color: var(--sb-on-surface) !important;
+  margin: 0.25rem 0 !important;
+}
+section[data-testid="stSidebar"] div[role="radiogroup"] label:hover {
+  background-color: var(--sb-surface-container-high) !important;
+  border-color: var(--sb-primary) !important;
+  color: var(--sb-primary) !important;
+}
+section[data-testid="stSidebar"] div[role="radiogroup"] input:checked + div {
+  background-color: var(--sb-primary) !important;
+  color: var(--sb-on-primary) !important;
+  border-color: var(--sb-primary) !important;
+}
+
+/* -- Expander/Accordian -- */
+.streamlit-expanderHeader {
+  font-family: "Inter", sans-serif !important;
+  color: var(--sb-on-surface) !important;
+}
+
+/* -- Input fields -- */
+.stTextInput > div > div > input {
+  border-radius: 0.25rem !important;
+  border: 1px solid var(--sb-outline) !important;
+  background-color: var(--sb-surface-container) !important;
+  color: var(--sb-on-surface) !important;
+}
+.stTextInput > div > div > input:focus {
+  border-color: var(--sb-primary) !important;
+  box-shadow: 0 0 0 3px rgba(255, 182, 144, 0.1) !important;
+}
+
+/* -- Success/Error/Warning icons in badges -- */
+.pill-error .material-symbols-outlined {
+  color: #ffb4ab !important;
+}
+.pill-warning .material-symbols-outlined {
+  color: #F59E0B !important;
+}
+.pill-success .material-symbols-outlined {
+  color: #28a745 !important;
+}
+.pill-primary .material-symbols-outlined {
+  color: var(--sb-primary) !important;
+}
+
+/* -- Dividers & Separators -- */
+hr {
+  border-color: var(--sb-outline) !important;
+}
+
+/* -- Avatar / User Pill -- */
+.user-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.5rem !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  border-radius: 9999px !important;
+  background-color: var(--sb-surface-container-high) !important;
+  border: 1px solid var(--sb-outline) !important;
+  color: var(--sb-on-surface) !important;
+}
+
+/* -- Focus visible -- */
+*:focus-visible {
+  outline: 2px solid var(--sb-primary) !important;
+  outline-offset: 2px !important;
+}
+
+/* -- Layout -- */
+.main .block-container {
+  padding-top: 3rem !important;
+  background-color: var(--sb-surface) !important;
+}
+
+.sticky-title {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px 30px;
+  z-index: 999;
+  text-align: center;
+  margin: 0;
+  font-size: 24px;
+  color: var(--sb-on-surface);
+  font-weight: 600;
+  background-color: var(--sb-surface-container);
+  border-bottom: 1px solid var(--sb-outline);
+}
+
+/* Adjust content spacer for fixed header */
+.content-spacer {
+  margin-top: 3rem !important;
+}

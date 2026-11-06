@@ -60,7 +60,6 @@ def fetch_mining_news(mine_type):
     else:
         query = "India underground mine collapse OR tunnel accident OR mine disaster"
 
-
     encoded_query = urllib.parse.quote(query)
 
     url = f"https://news.google.com/rss/search?q={encoded_query}&hl=en-IN&gl=IN&ceid=IN:en"
@@ -82,7 +81,6 @@ import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
 from pandas.errors import EmptyDataError
-
 
 def process_uploaded_file(file):
 
@@ -150,7 +148,6 @@ def process_uploaded_file(file):
 
     return df, stats
 
-
 def generate_mock_data(n=100):
     np.random.seed(42)
     data = pd.DataFrame({
@@ -173,7 +170,6 @@ def generate_mock_data(n=100):
     data['rockfall_risk'] = ((data['fs'] < 1.4) | (data['reinforcement'] < 0.4)).astype(int)
 
     return data
-
 
 def process_underground_file(file):
 
@@ -244,7 +240,6 @@ def process_underground_file(file):
 
     return df, stats
 
-
 def generate_underground_mock_data(n=100):
 
     np.random.seed(42)
@@ -276,7 +271,6 @@ def generate_underground_mock_data(n=100):
 
     return data
 
-
 # ---------------------------------------------------------------------------
 # Upload directory helpers (Phase 2: keep uploaded data separate from bundled datasets)
 # ---------------------------------------------------------------------------
@@ -284,13 +278,11 @@ USER_DATA_DIR = "user_data"
 OPEN_PIT_UPLOAD_DIR = os.path.join(USER_DATA_DIR, "open_pit_uploads")
 UNDERGROUND_UPLOAD_DIR = os.path.join(USER_DATA_DIR, "underground_uploads")
 
-
 def get_upload_dir(mine_type):
     """Return the upload directory for the selected mine type."""
     if mine_type == "Open Pit Mines":
         return OPEN_PIT_UPLOAD_DIR
     return UNDERGROUND_UPLOAD_DIR
-
 
 def sanitize_filename(filename):
     """Strip path traversal and unsafe characters from an uploaded filename."""
@@ -299,7 +291,6 @@ def sanitize_filename(filename):
     if not safe or safe in ('.', '..'):
         safe = "upload.csv"
     return safe
-
 
 def get_unique_filename(upload_dir, original_name):
     """Create a unique, timestamp-prefixed filename inside upload_dir."""
@@ -310,7 +301,6 @@ def get_unique_filename(upload_dir, original_name):
         ext = ".csv"
     return f"{timestamp}_{name}{ext}"
 
-
 def save_uploaded_bytes(file_bytes, upload_dir, filename):
     """Save raw uploaded bytes to disk and return the saved file path."""
     os.makedirs(upload_dir, exist_ok=True)
@@ -319,7 +309,6 @@ def save_uploaded_bytes(file_bytes, upload_dir, filename):
         f.write(file_bytes)
     return file_path
 
-
 # ---------------------------------------------------------------------------
 # Help desk attachment security helpers (Phase 4A)
 # ---------------------------------------------------------------------------
@@ -327,7 +316,6 @@ HELPDESK_ATTACHMENT_DIR = "helpdesk_attachments"
 MAX_ATTACHMENT_SIZE_MB = 10
 MAX_ATTACHMENT_SIZE_BYTES = MAX_ATTACHMENT_SIZE_MB * 1024 * 1024
 ALLOWED_ATTACHMENT_EXTENSIONS = {'.png', '.jpg', '.jpeg', '.csv', '.pdf'}
-
 
 def secure_attachment_filename(original_filename):
     """Strip path components and validate extension from an uploaded filename.
@@ -358,7 +346,6 @@ def secure_attachment_filename(original_filename):
         return None, f"File type '{ext}' is not allowed. Allowed: {', '.join(sorted(ALLOWED_ATTACHMENT_EXTENSIONS))}."
 
     return basename, None
-
 
 def save_helpdesk_attachment(file_bytes, original_filename):
     """Save an uploaded help desk attachment securely.
@@ -403,7 +390,6 @@ def save_helpdesk_attachment(file_bytes, original_filename):
         return None, None, "Failed to save attachment."
 
     return target_path, basename, None
-
 
 st.sidebar.title("MineSafe Navigation")
 
@@ -517,8 +503,6 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-
-
 st.markdown("""
 <style>
 section[data-testid="stSidebar"] label[data-baseweb="radio"] {
@@ -564,12 +548,9 @@ def metric_card(title, value, status):
      </div>
      """, unsafe_allow_html=True)
 
-
 if section == "Dashboard":
 
     st.markdown(f"### {mine_type} Monitoring Dashboard")
-
-
 
     if mine_type == "Open Pit Mines":
         latest = data.iloc[-1]
@@ -625,8 +606,6 @@ if section == "Dashboard":
 
     st.divider()
 
-
-
     if mine_type == "Open Pit Mines":
 
         st.subheader("Open Pit Stability Trends")
@@ -651,14 +630,11 @@ if section == "Dashboard":
         st.metric("Average Factor of Safety", avg_fs)
         st.metric("Minimum Factor of Safety", min_fs)
 
-
-
     else:
 
         st.subheader("Underground Seismic & Stress Monitoring")
 
         col7, col8 = st.columns(2)
-
 
         with col7:
             if 'energy' in data.columns:
@@ -666,7 +642,6 @@ if section == "Dashboard":
                     data.set_index('timestamp')['energy'],
                     use_container_width=True
                 )
-
 
         with col8:
             if 'maxenergy' in data.columns:
@@ -690,7 +665,6 @@ if section == "Dashboard":
                     data.set_index('timestamp')['gpuls'],
                     use_container_width=True
                 )
-
 
         if 'energy' in data.columns:
             st.metric(
@@ -721,10 +695,7 @@ if section == "Dashboard":
             use_container_width=True
         )
 
-
-
 elif section == "Prediction":
-
 
     st.markdown("### Rockfall Prediction")
 
@@ -741,7 +712,6 @@ elif section == "Prediction":
     else:
         model_path = "underground_rockfall_model.pkl"
 
-
     if os.path.exists(model_path):
 
         try:
@@ -756,7 +726,6 @@ elif section == "Prediction":
 
                 prediction = model.predict(input_df)[0]
                 model_used = True
-
 
             else:
 
@@ -783,8 +752,6 @@ elif section == "Prediction":
             prediction = 0
             model_used = False
 
-
-
     else:
 
         st.warning("Model file not found. Using rule-based fallback.")
@@ -809,7 +776,6 @@ elif section == "Prediction":
 
         model_used = False
 
-
     prediction_label = "HIGH RISK" if prediction == 1 else "Safe"
     prediction_color = "#dc3545" if prediction == 1 else "#28a745"
 
@@ -825,8 +791,6 @@ elif section == "Prediction":
     """, unsafe_allow_html=True)
 
     col1, col2, col3 = st.columns(3)
-
-
 
     if mine_type == "Open Pit Mines":
 
@@ -844,8 +808,6 @@ elif section == "Prediction":
                 f"{latest.get('energy', 0):,.2f} J"
             )
 
-
-
         with col2:
             st.metric(
                 "Peak Seismic Event Energy (J)",
@@ -854,7 +816,6 @@ elif section == "Prediction":
 
     with col3:
         st.metric("Model Used", "Yes" if model_used else "No")
-
 
     with st.expander("View Detailed Input Data"):
 
@@ -877,7 +838,6 @@ elif section == "Prediction":
                 "General Energy": round(latest.get('genergy', 0), 3),
                 "Pulse Count": round(latest.get('gpuls', 0), 3)
             })
-
 
     st.markdown("### Rockfall Risk Trend")
 
@@ -909,11 +869,125 @@ elif section == "Prediction":
 
     st.plotly_chart(fig, use_container_width=True)
 
-
-
-
 elif section == "Alerts":
+    st.markdown(f"### {mine_type} - Real-Time Alerts Dashboard")
+    st.markdown('Monitor high-risk stability events with intelligent filtering and classification.')
+    import pandas as pd
+    import plotly.express as px
 
+    alerts = data.copy()
+    alerts['DateTime'] = pd.to_datetime(alerts['timestamp'])
+
+    # Severity mapping from alert types
+    severity_map = {
+        'Critical': 'Critical',
+        'FS Alert': 'High',
+        'Moderate Alert': 'Moderate',
+        'Info Alert': 'Info',
+    }
+    alerts['Severity'] = alerts['type'].map(severity_map).fillna('Info')
+# Summary metrics row
+    total_alerts = len(filtered_alerts)
+    critical_count = len(filtered_alerts[filtered_alerts['Severity'] == 'Critical'])
+    high_count = len(filtered_alerts[filtered_alerts['Severity'] == 'High'])
+
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.metric('Total Alerts', total_alerts)
+    with col2:
+        st.metric('Critical', critical_count)
+    with col3:
+        st.metric('High Severity', high_count)
+
+    # Plotly pie chart for severity distribution
+    severity_counts = filtered_alerts['Severity'].value_counts()
+    if len(severity_counts) > 0:
+        fig = px.pie(
+            values=severity_counts.values,
+            names=severity_counts.index,
+            title='Severity Distribution',
+        )
+        st.plotly_chart(fig, use_container_width=True)
+
+    # Top Critical Alerts section
+    st.markdown('### Top Critical Alerts')
+    critical_alerts = filtered_alerts[filtered_alerts['Severity'] == 'Critical'].head(5)
+    if len(critical_alerts) > 0:
+        for _, alert in critical_alerts.iterrows():
+            st.markdown(f"- **{alert.get('location', 'Unknown')}** - {alert.get('timestamp', 'N/A')} - {alert.get('type', 'Unknown Type')} - Critical")
+    else:
+        st.info('No critical alerts at this time.')
+
+    # Alert log with severity color coding
+    st.markdown('### Alert Log')
+    for _, alert in filtered_alerts.iterrows():
+        severity = alert['Severity']
+        if severity == 'Critical':
+            border_color = 'red'
+            bg_color = 'rgba(255, 0, 0, 0.1)'
+        elif severity == 'High':
+            border_color = 'orange'
+            bg_color = 'rgba(255, 165, 0, 0.1)'
+        elif severity == 'Moderate':
+            border_color = 'orange'
+            bg_color = 'rgba(255, 165, 0, 0.05)'
+        else:
+            border_color = 'blue'
+            bg_color = 'rgba(0, 0, 255, 0.05)'
+
+        st.markdown(
+            f"""
+            <div style='padding: 8px 12px; background-color: {bg_color}; border-left: 4px solid {border_color}; margin: 4px 0; border-radius: 4px; font-size: 0.9em;'>
+                <strong>{alert.get('location', 'Unknown Location')}</strong> - {pd.to_datetime(alert['timestamp']).strftime('%m/%d %H:%M')} - {alert.get('type', 'Unknown Type')} - {severity}
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+    # Notification form wrapped in st.form
+    st.markdown('### Send Notification')
+    with st.form(key='notification_form'):
+        recipient = st.text_input(
+            'Recipient Email(s)',
+            help='Enter email addresses separated by commas. Configure SMTP in Streamlit secrets or environment variables.',
+        )
+        subject = st.text_input('Subject')
+        message = st.text_area('Message')
+        form_submit = st.form_submit_button('Send')
+
+        if form_submit and recipient:
+            from notifications import send_email
+            send_email(recipient, subject, message)
+            st.success('Notification sent!')
+
+    # Filters row: severity, type, notification
+    c1, c2, c3 = st.columns(3)
+    with c1:
+        severity_filter = st.selectbox(
+            'Severity Filter',
+            ['All', 'Critical', 'High', 'Moderate', 'Info'],
+            index=0,
+        )
+
+    with c2:
+        type_filter = st.multiselect(
+            'Type Filter',
+            ['All'] + list(alerts['type'].unique()) if len(alerts) > 0 else ['All'],
+            default=['Critical'] if len(alerts) > 0 else [],
+        )
+
+    with c3:
+        notification_method = st.selectbox(
+            'Notification Method',
+            ['Email', 'SMS', 'App Notification', 'None'],
+        )
+
+    # Apply filters
+    filtered_alerts = alerts.copy()
+    if severity_filter != 'All':
+        filtered_alerts = filtered_alerts[filtered_alerts['Severity'] == severity_filter]
+    if 'All' not in type_filter:
+        filtered_alerts = filtered_alerts[filtered_alerts['type'].isin(type_filter)]
 
     st.markdown(f"### {mine_type} - Real-Time Alerts Dashboard")
     st.markdown("Monitor high-risk stability events with intelligent filtering and classification.")
@@ -923,13 +997,15 @@ elif section == "Alerts":
     alerts = data.copy()
     alerts['DateTime'] = pd.to_datetime(alerts['timestamp'])
 
-    available_cols = set(alerts.columns)
+    total_records = len(data)
+    analysis_date = pd.Timestamp.now().strftime("%Y-%m-%d %H:%M:%S")
 
+    available_cols = set(alerts.columns)
 
     is_open_pit_data = {'fs', 'reinforcement'}.issubset(available_cols)
     is_underground_data = {'energy', 'maxenergy'}.issubset(available_cols)
 
-    col1, col2 = st.columns(2)
+    col1, col2, col3 = st.columns(3)
 
     with col1:
 
@@ -941,311 +1017,11 @@ elif section == "Alerts":
         recipient_emails = st.text_input(
             "Recipient Email(s) (comma-separated)",
             placeholder="e.g. safety@mine.com, engineer@mine.com",
-            help="Enter one or more email addresses separated by commas.",
-        )
-
-        if mine_type == "Open Pit Mines" and is_open_pit_data:
-
-            fs_threshold = st.slider(
-                "FS Threshold (Lower Bound)",
-                float(alerts['fs'].min()),
-                float(alerts['fs'].max()),
-                value=1.4,
-                step=0.1
-            )
-
-
-        elif mine_type == "Underground Pit Mines" and is_underground_data:
-
-            energy_threshold = st.slider(
-                "Energy Threshold",
-                float(alerts['energy'].min()),
-                float(alerts['energy'].max()),
-                value=float(alerts['energy'].quantile(0.75)),
-                step=1.0
-            )
-
-        else:
-            st.warning("Uploaded dataset does not match selected mine type.")
-
-    with col2:
-
-        date_filter = st.date_input(
-            "From Date",
-            value=alerts['DateTime'].min().date()
-        )
-
-        type_filter = st.multiselect(
-            "Alert Type",
-            ["Critical", "FS Alert", "Reinforcement Alert",
-             "Energy Alert", "Peak Energy Alert", "Info"],
-            default=["Critical"]
+            help="Enter one or more email addresses separated by commas. Configure SMTP in Streamlit secrets or environment variables.",
         )
 
 
-
-    def get_type(row):
-
-
-        if mine_type == "Open Pit Mines" and is_open_pit_data:
-
-            if row['fs'] < fs_threshold and row['reinforcement'] < 0.4:
-                return "Critical"
-            elif row['fs'] < fs_threshold:
-                return "FS Alert"
-            elif row['reinforcement'] < 0.4:
-                return "Reinforcement Alert"
-            return "Info"
-
-
-        elif mine_type == "Underground Pit Mines" and is_underground_data:
-
-            if row['energy'] > energy_threshold and row['maxenergy'] > energy_threshold:
-                return "Critical"
-            elif row['energy'] > energy_threshold:
-                return "Energy Alert"
-            elif row['maxenergy'] > energy_threshold:
-                return "Peak Energy Alert"
-            return "Info"
-
-        return "Info"
-
-    alerts['Type'] = alerts.apply(get_type, axis=1)
-
-
-    alerts = alerts[alerts['DateTime'].dt.date >= date_filter]
-
-    if type_filter:
-        alerts = alerts[alerts['Type'].isin(type_filter)]
-
-
-
-    st.subheader("Alert Timeline")
-
-    if not alerts.empty:
-
-        alert_chart = alerts.copy()
-        alert_chart['Alert Count'] = 1
-        alert_chart = alert_chart.set_index('DateTime').resample('H')['Alert Count'].sum()
-
-        st.line_chart(alert_chart, use_container_width=True)
-
-    else:
-        st.info("No alerts for selected filters.")
-
-
-    st.subheader("Detailed Alert Log")
-
-    if alerts.empty:
-        st.success("No alert events detected with current filters.")
-    else:
-
-        display_columns = ['DateTime', 'Type']
-
-        if 'fs' in alerts.columns:
-            display_columns.append('fs')
-
-        if 'reinforcement' in alerts.columns:
-            display_columns.append('reinforcement')
-
-        if 'energy' in alerts.columns:
-            display_columns.append('energy')
-
-        if 'maxenergy' in alerts.columns:
-            display_columns.append('maxenergy')
-
-        st.dataframe(
-            alerts[display_columns],
-            use_container_width=True
-        )
-    st.subheader("Top 3 Most Critical Alerts")
-
-    if not alerts.empty:
-
-
-        if 'fs' in alerts.columns:
-            top_alerts = alerts.sort_values(by='fs').head(3)
-
-        elif 'energy' in alerts.columns:
-            top_alerts = alerts.sort_values(by='energy', ascending=False).head(3)
-
-        else:
-            top_alerts = alerts.head(3)
-
-        for _, row in top_alerts.iterrows():
-
-            fs_val = f"{row['fs']:.3f}" if 'fs' in row else "N/A"
-            reinf_val = f"{row['reinforcement']:.3f}" if 'reinforcement' in row else "N/A"
-            energy_val = f"{row['energy']:.2f}" if 'energy' in row else "N/A"
-            maxenergy_val = f"{row['maxenergy']:.2f}" if 'maxenergy' in row else "N/A"
-
-            st.markdown(f"""
-            <div style='background-color:#fff3cd;
-                        padding:15px;
-                        border-radius:10px;
-                        margin-bottom:10px;
-                        border-left:5px solid #ffa500'>
-                <strong>{row['DateTime'].strftime('%Y-%m-%d %H:%M:%S')}</strong><br>
-                <strong>Type:</strong> {row['Type']}<br>
-                <strong>FS:</strong> {fs_val} |
-                <strong>Reinforcement:</strong> {reinf_val} <br>
-                <strong>Energy:</strong> {energy_val} |
-                <strong>Max Energy:</strong> {maxenergy_val}
-            </div>
-            """, unsafe_allow_html=True)
-
-    else:
-        st.info("No critical alerts available.")
-
-    st.divider()
-    st.subheader("Send Alert Notification")
-
-    if st.button("Send Test Notification"):
-
-        if notification_method == "Email":
-
-            success, msg = send_email(
-                subject="Rockfall Alert",
-                message=f"Warning! High-risk event detected in {mine_type}. Immediate inspection required.",
-                to_emails=recipient_emails,
-            )
-
-            if success:
-                st.success(msg)
-            else:
-                st.error(msg)
-
-        elif notification_method == "SMS":
-            st.info("SMS notification triggered (SMS integration required).")
-
-        elif notification_method == "App Notification":
-            st.info("App notification sent successfully.")
-
-        else:
-            st.warning("Please select a notification method.")
-
-
-
-
-
-elif section == "Upload Data":
-
-    import os
-    import pandas as pd
-
-
-    st.markdown(f"### {mine_type} - Upload Stability Data")
-
-    st.markdown("Upload new monitoring data in CSV format.")
-
-    upload_file = st.file_uploader(
-        "Choose a CSV file",
-        type="csv",
-        key="upload2"
-    )
-
-    if mine_type == "Open Pit Mines":
-
-        required_columns = [
-            "timestamp",
-            "fs",
-            "reinforcement",
-            "rockfall_risk"
-        ]
-
-    else:
-
-        required_columns = [
-            "timestamp",
-            "fs",
-            "reinforcement",
-            "rockfall_risk",
-            "unit_weight_knm",
-            "cohesion_kpa",
-            "internal_friction_angle_",
-            "slope_angle_",
-            "slope_height_m",
-            "pore_water_pressure_ratio",
-            "reinforcement_type"
-        ]
-
-    if upload_file is not None:
-
-        try:
-            # Save raw uploaded bytes to user_data directory first (Phase 2: never overwrite bundled datasets)
-            file_bytes = upload_file.getvalue()
-            upload_dir = get_upload_dir(mine_type)
-            saved_name = get_unique_filename(upload_dir, upload_file.name)
-            saved_path = save_uploaded_bytes(file_bytes, upload_dir, saved_name)
-
-            # Process from in-memory bytes so the file pointer starts at the beginning
-            new_data = pd.read_csv(BytesIO(file_bytes))
-
-
-            missing_cols = [
-                col for col in required_columns
-                if col not in new_data.columns
-            ]
-
-            if missing_cols:
-                st.error(f"Missing required columns: {missing_cols}")
-                st.stop()
-
-
-            new_data["timestamp"] = pd.to_datetime(
-                new_data["timestamp"],
-                errors="coerce"
-            )
-
-            if new_data["timestamp"].isnull().any():
-                st.error("Invalid timestamp format detected.")
-                st.stop()
-
-
-            new_data = new_data.sort_values("timestamp")
-            new_data = new_data.reset_index(drop=True)
-
-
-            st.success(f"File uploaded and saved to: {saved_path}")
-
-            st.subheader("Preview of Uploaded Data")
-            st.dataframe(new_data.head(), use_container_width=True)
-
-        except Exception as e:
-            st.error(f"Error processing uploaded file: {e}")
-
-    st.divider()
-    st.subheader("Site Image - Mining Area")
-
-    if mine_type == "Open Pit Mines":
-        image_path = "mine.png"
-        caption_text = "Open Pit Mining Area"
-    else:
-        image_path = "underground_mine1.png"
-        caption_text = "Underground Tunnel Monitoring"
-
-    if os.path.exists(image_path):
-        st.image(
-            image_path,
-            caption=caption_text,
-            use_container_width=True
-        )
-    else:
-        st.warning(f"{image_path} not found in project folder.")
-
-elif section == "Results":
-    import pandas as pd
-    import matplotlib.pyplot as plt
-    import streamlit as st
-
-
-    st.markdown(f"### {mine_type} - Prediction Results Summary")
-
-
-    total_records = len(data)
-    analysis_date = pd.Timestamp.now().strftime("%Y-%m-%d %H:%M:%S")
-
-    if mine_type == "Underground Pit Mines":
+if mine_type == "Underground Pit Mines":
 
         target_col = 'class' if 'class' in data.columns else 'hazard'
 
@@ -1266,7 +1042,6 @@ elif section == "Results":
             overall_risk = "Low"
             risk_color = "success"
 
-
         col1, col2, col3 = st.columns(3)
         with col1:
             metric_card("Total Shifts Analyzed", f"{total_records}", "success")
@@ -1283,7 +1058,6 @@ elif section == "Results":
         with col6:
             metric_card("Last Analyzed", analysis_date, "success")
 
-
         st.markdown("### Seismic Activity Breakdown")
         col7, col8 = st.columns(2)
         with col7:
@@ -1294,8 +1068,7 @@ elif section == "Results":
         with col8:
             metric_card("Total Multi-magnitude Bumps", f"{int(total_bumps)}", "error" if total_bumps > 5 else "success")
 
-
-    else:
+else:
         total_alerts = int(data['rockfall_risk'].sum())
         avg_fs = data['fs'].mean()
         avg_reinf = data['reinforcement'].mean()
@@ -1327,415 +1100,44 @@ elif section == "Results":
         with col6:
             metric_card("Last Analyzed", analysis_date, "success")
 
+st.markdown("### Risk Proportion")
+st.progress(min(int(risk_percent), 100), text=f"{risk_percent:.2f}% of data indicates high risk")
+st.markdown("### Distribution Breakdown")
 
-    st.markdown("### Risk Proportion")
-    st.progress(min(int(risk_percent), 100), text=f"{risk_percent:.2f}% of data indicates high risk")
+label_map = {0: "Safe", 1: "Seismic Hazard"} if mine_type == "Underground Pit Mines" else {0: "Stable",
+                                                                                            1: "Rockfall Risk"}
+target_series = data['class'] if mine_type == "Underground Pit Mines" else data['rockfall_risk']
 
-    st.markdown("### Distribution Breakdown")
+fig, ax = plt.subplots()
+ax.pie(risk_counts, labels=risk_counts.index, autopct='%1.1f%%', startangle=90, colors=['#2ecc71', '#e74c3c'])
+ax.axis("equal")
+st.pyplot(fig)
 
-    label_map = {0: "Safe", 1: "Seismic Hazard"} if mine_type == "Underground Pit Mines" else {0: "Stable",
-                                                                                               1: "Rockfall Risk"}
-    target_series = data['class'] if mine_type == "Underground Pit Mines" else data['rockfall_risk']
+st.subheader("Real-Time Indian Mining News")
 
-    risk_counts = target_series.value_counts().rename(label_map)
+target_series = data['class'] if mine_type == "Underground Pit Mines" else data['rockfall_risk']
+risk_counts = target_series.value_counts().rename(label_map)
 
-    fig, ax = plt.subplots()
-    ax.pie(risk_counts, labels=risk_counts.index, autopct='%1.1f%%', startangle=90, colors=['#2ecc71', '#e74c3c'])
-    ax.axis("equal")
-    st.pyplot(fig)
+fig, ax = plt.subplots()
+ax.pie(risk_counts, labels=risk_counts.index, autopct='%1.1f%%', startangle=90, colors=['#2ecc71', '#e74c3c'])
+ax.axis("equal")
+st.pyplot(fig)
 
+risk_counts = target_series.value_counts().rename(label_map)
 
-    st.subheader("Real-Time Indian Mining News")
-    news_items = fetch_mining_news(mine_type)
-    risk_keywords = ["collapse", "rockfall", "death", "dies", "injured", "blast", "accident", "trapped", "seismic"]
-    news_risk_score = 0
+fig, ax = plt.subplots()
 
-    if news_items:
-        for item in news_items:
-            title_lower = item["title"].lower()
-            if any(word in title_lower for word in risk_keywords):
-                st.error(f"{item['title']}")
-                news_risk_score += 1
-            else:
-                st.info(f"{item['title']}")
-            st.markdown(f"[Read more]({item['link']})")
-    else:
-        st.info("No recent mining news found.")
 
 
-    adjusted_risk_percent = min(risk_percent + (news_risk_score * 3), 100)
-    st.markdown("### Final Adjusted Risk Index (Local + National Context)")
-    st.progress(int(adjusted_risk_percent), text=f"{adjusted_risk_percent:.2f}% adjusted risk")
 
 
 
 
-elif section == "AI Assistant":
-
-    import pandas as pd
-
-    st.markdown(f"### {mine_type} - Prediction Results Summary")
-
-    st.markdown(
-        "Ask about rockfall risk, slope stability, underground stress, RMR, or safety recommendations."
-    )
-
-    prompt = st.text_area(
-        "Ask your question:",
-        placeholder="Example: What is the current risk level?"
-    )
-
-    if st.button("Get Response"):
-
-        if not prompt.strip():
-            st.warning("Please enter a question.")
-            st.stop()
-
-        question = prompt.lower()
-        risk_percent = 100 * data['rockfall_risk'].mean()
-        avg_fs = data['fs'].mean()
-        avg_reinf = data['reinforcement'].mean()
-
-        latest = data.iloc[-1]
-        if mine_type == "Underground Pit Mines":
-            try:
-                data['stress_mpa'] = (
-                    data['slope_height_m'] *
-                    data['unit_weight_knm']
-                ) / 1000
-
-                data['rmr'] = (
-                    data['cohesion_kpa'] / 2.5
-                ) + (
-                    data['internal_friction_angle_'] * 1.2
-                )
-
-                data['rmr'] = data['rmr'].clip(20, 90)
-
-                avg_stress = data['stress_mpa'].mean()
-                avg_rmr = data['rmr'].mean()
-
-            except:
-                avg_stress = None
-                avg_rmr = None
-
-        if "risk" in question:
-            st.write(
-                f"Approximately **{risk_percent:.1f}%** of monitored slopes show high rockfall risk."
-            )
-        elif "factor of safety" in question or "fs" in question:
-            st.write(
-                f"The average Factor of Safety is **{avg_fs:.2f}**."
-            )
-
-            if avg_fs < 1.4:
-                st.warning("The FS is below recommended safe design levels.")
-        elif "reinforcement" in question:
-            st.write(
-                f"The average reinforcement value is **{avg_reinf:.2f}**."
-            )
-        elif mine_type == "Underground Pit Mines" and "stress" in question:
-            if avg_stress is not None:
-                st.write(
-                    f"The average underground induced stress is **{avg_stress:.2f} MPa**."
-                )
-            else:
-                st.warning("Stress data not available.")
-
-        elif mine_type == "Underground Pit Mines" and "rmr" in question:
-            if avg_rmr is not None:
-                st.write(
-                    f"The average Rock Mass Rating (RMR) is **{avg_rmr:.2f}**."
-                )
-
-                if avg_rmr < 40:
-                    st.error("Rock mass quality is poor. Additional support recommended.")
-            else:
-                st.warning("RMR data not available.")
-        elif "reduce" in question and "rockfall" in question:
-            if mine_type == "Open Pit Mines":
-                st.markdown("""
-                **To reduce rockfall risk in Open Pit Mines:**
-                - Install rock bolts and mesh.
-                - Improve slope geometry.
-                - Control blasting vibrations.
-                - Ensure proper drainage.
-                - Use real-time slope monitoring systems.
-                """)
-            else:
-                st.markdown("""
-                **To reduce rockfall risk in Underground Mines:**
-                - Increase rock bolting density.
-                - Apply shotcrete lining.
-                - Monitor stress concentrations.
-                - Improve tunnel reinforcement systems.
-                - Conduct regular geotechnical inspections.
-                """)
-        elif "safe" in question and ("worker" in question or "workers" in question):
-            st.markdown("""
-            **Worker Safety Recommendations:**
-            - Restrict access to unstable zones.
-            - Install protective barriers.
-            - Use helmets and PPE.
-            - Implement alarm systems.
-            - Conduct emergency drills regularly.
-            """)
-
-        elif "current" in question or "latest" in question:
-            st.markdown(f"""
-            **Latest Monitoring Snapshot:**
-            - FS: **{latest['fs']:.2f}**
-            - Reinforcement: **{latest['reinforcement']:.2f}**
-            - Risk Status: **{"HIGH RISK" if latest['rockfall_risk'] == 1 else "Safe"}**
-            """)
-        elif "help" in question:
-            st.markdown("""
-            You can ask about:
-            - Current risk
-            - Factor of Safety
-            - Reinforcement
-            - Stress (Underground)
-            - RMR (Underground)
-            - Safety recommendations
-            - How to reduce rockfall
-            """)
-        elif "news" in question:
-            news_items = fetch_mining_news(mine_type)
-            for item in news_items:
-                st.write(f"- {item['title']}")
-        else:
-            st.info(
-                "I can answer questions about risk, FS, reinforcement, underground stress, RMR, and safety measures."
-            )
-
-elif section == "Help Desk":
-    import os
-    import pandas as pd
-    from datetime import datetime
-    import uuid
-    import streamlit as st
-
-
-    st.markdown("### MineSafe Command & Support Center")
-
-    st.markdown("""
-    This help desk allows engineers, supervisors, and safety officers
-    to report seismic hazards, underground collapses, system errors, or real
-    mine incidents.
-    """)
-
-    col1, col2 = st.columns(2)
-
-    with col1:
-        st.markdown("""
-        ### Project Manager
-        **Name:** Er. Rajesh Verma
-        **Designation:** Mine Safety & Operations Manager
-        **Phone:** +91-98765-43210
-        **Email:** manager@minesafety.com
-        """)
-
-        st.markdown("""
-        ### Technical Support Lead
-        **Name:** Eng. Priya Sharma
-        **Designation:** AI Systems Engineer
-        **Phone:** +91-91234-56789
-        **Email:** support@minesafety.com
-        """)
-
-    with col2:
-        st.markdown("""
-        ### Emergency Control Room
-        **24/7 Helpline:** +91-90000-11111
-        **Emergency Email:** emergency@minesafety.com
-        """)
-
-        st.markdown("""
-        ### Office Address
-        Mine Safety Control Center
-        Sector 12, Industrial Area
-        Lucknow, Uttar Pradesh, India
-        PIN: 226010
-        """)
-
-    st.divider()
-
-    st.subheader("Working Hours")
-
-    st.markdown("""
-    **Monday – Friday:** 9:00 AM – 6:00 PM
-    **Saturday:** 9:00 AM – 2:00 PM
-    **Sunday:** Closed
-    """)
-
-
-
-    st.divider()
-
-    st.subheader("Current System Context")
-
-
-    if 'data' in globals() and data is not None:
-        if mine_type == "Underground Pit Mines":
-
-            target_col = 'class' if 'class' in data.columns else 'hazard'
-            risk_percent = 100 * data[target_col].mean() if target_col in data.columns else 0
-
-
-            avg_val = data['energy'].mean() if 'energy' in data.columns else 0
-            total_alerts = int(data[target_col].sum()) if target_col in data.columns else 0
-
-            label_avg = "Avg Energy (J)"
-            label_risk = "Seismic Risk %"
-        else:
-
-            risk_percent = 100 * data['rockfall_risk'].mean() if 'rockfall_risk' in data.columns else 0
-            avg_val = data['fs'].mean() if 'fs' in data.columns else 0
-            total_alerts = int(data['rockfall_risk'].sum()) if 'rockfall_risk' in data.columns else 0
-
-            label_avg = "Avg FS"
-            label_risk = "Rockfall Risk %"
-
-        col1, col2, col3 = st.columns(3)
-        col1.metric(label_risk, f"{risk_percent:.2f}%")
-        col2.metric(label_avg, f"{avg_val:.2f}")
-        col3.metric("Active Alerts", total_alerts)
-    else:
-        st.info("No dataset loaded yet. Please upload seismic-bumps.csv or slope_stability_datasets.csv.")
-
-    st.divider()
-
-    st.subheader("Report Mining Incident / Issue")
-
-    with st.form("helpdesk_form"):
-        name = st.text_input("Officer / Engineer Name")
-        designation = st.selectbox(
-            "Designation",
-            ["Site Engineer", "Geotechnical Engineer", "Seismologist", "Safety Officer",
-             "Mine Manager", "Supervisor", "Other"]
-        )
-
-        contact = st.text_input("Contact Number / Email")
-
-
-        incident_categories = [
-            "Seismic Bump Event",
-            "Underground Collapse",
-            "Abnormal Energy Spike",
-            "Gas Leakage / Ventilation",
-            "Rockburst Occurrence",
-            "Sensor Failure",
-            "False Hazard Prediction",
-            "System Bug",
-            "Other"
-        ] if mine_type == "Underground Pit Mines" else [
-            "Rockfall Event", "Slope Instability", "Blasting Vibration Issue",
-            "Sensor Failure", "False Prediction", "System Bug", "Other"
-        ]
-
-        incident_type = st.selectbox("Incident Category", incident_categories)
-
-        hazard_level = st.selectbox(
-            "Hazard Severity",
-            ["Low", "Moderate", "High", "Critical"]
-        )
-
-        location = st.text_input("Mine Section / Level / Tunnel ID")
-        description = st.text_area("Detailed Description (e.g., Magnitude of bump, depth, etc.)")
-
-        uploaded_file = st.file_uploader(
-            "Upload Evidence (Seismic Log/Image/Report)",
-            type=["png", "jpg", "jpeg", "csv", "pdf"]
-        )
-
-        submitted = st.form_submit_button("Submit Incident Report", type="primary", use_container_width=True)
-
-    if submitted:
-        if not name or not contact or not description:
-            st.error("Please fill all mandatory fields.")
-        else:
-            ticket_id = "MS-" + str(uuid.uuid4())[:8].upper()
-            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-            attachment_path = None
-            attachment_display = None
-            if uploaded_file is not None:
-                file_bytes = uploaded_file.getbuffer()
-                attachment_path, attachment_display, attach_err = save_helpdesk_attachment(
-                    file_bytes, uploaded_file.name
-                )
-                if attach_err:
-                    st.error(attach_err)
-                    attachment_path = None
-                    attachment_display = None
-
-            ticket_data = {
-                "Ticket ID": ticket_id,
-                "Timestamp": timestamp,
-                "Mine Type": mine_type,
-                "Name": name,
-                "Designation": designation,
-                "Contact": contact,
-                "Incident Type": incident_type,
-                "Hazard Level": hazard_level,
-                "Location": location,
-                "Description": description,
-                "Attachment": attachment_path,
-                "Attachment_Display": attachment_display,
-                "Status": "Open"
-            }
-
-            file_path = "minesafe_helpdesk_database.csv"
-
-            if os.path.exists(file_path):
-                existing = pd.read_csv(file_path)
-                updated = pd.concat([existing, pd.DataFrame([ticket_data])], ignore_index=True)
-            else:
-                updated = pd.DataFrame([ticket_data])
-
-            updated.to_csv(file_path, index=False)
-
-            if hazard_level == "Critical":
-                st.error(f"CRITICAL INCIDENT REPORTED! Ticket ID: {ticket_id}")
-                st.warning("Immediate underground evacuation and safety team dispatch recommended.")
-            elif hazard_level == "High":
-                st.warning(f"High Priority Ticket Created: {ticket_id}")
-            else:
-                st.success(f"Ticket Submitted Successfully! ID: {ticket_id}")
-
-    st.divider()
-    st.subheader("Incident Tracking Dashboard")
-
-    if os.path.exists("minesafe_helpdesk_database.csv"):
-        tickets = pd.read_csv("minesafe_helpdesk_database.csv")
-
-        filter_status = st.selectbox("Filter by Status", ["All", "Open", "In Review", "Resolved"])
-        if filter_status != "All":
-            tickets = tickets[tickets["Status"] == filter_status]
-
-        st.dataframe(tickets, use_container_width=True)
-
-        st.markdown("### Update Ticket Status")
-        col_id, col_stat, col_btn = st.columns([2, 2, 1])
-
-        ticket_to_update = col_id.text_input("Enter Ticket ID to Update")
-        new_status = col_stat.selectbox("Change Status To", ["Open", "In Review", "Resolved"])
-
-        if col_btn.button("Update Status"):
-            df = pd.read_csv("minesafe_helpdesk_database.csv")
-            if ticket_to_update in df["Ticket ID"].values:
-                df.loc[df["Ticket ID"] == ticket_to_update, "Status"] = new_status
-                df.to_csv("minesafe_helpdesk_database.csv", index=False)
-                st.success("Ticket status updated.")
-                st.rerun()
-            else:
-                st.error("Invalid Ticket ID.")
-    else:
-        st.info("No incidents reported yet.")
-
-
-
-
+col1, col2, col3 = st.columns(3)
+col1.metric(label_risk, f"{risk_percent:.2f}%")
+col2.metric(label_avg, f"{avg_val:.2f}")
+col3.metric("Active Alerts", total_alerts)
+st.subheader("Report Mining Incident / Issue")
 
 
 

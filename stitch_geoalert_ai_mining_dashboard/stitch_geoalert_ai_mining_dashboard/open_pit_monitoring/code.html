@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "on-primary-container": "#582200", "secondary-container": "#00a6e0", "surface-container-high": "#242a3a", "on-background": "#dde2f8", "on-primary-fixed-variant": "#783200", "on-error": "#690005", "primary": "#ffb690", "on-tertiary-container": "#003b16", "on-tertiary-fixed-variant": "#005321", "secondary-fixed": "#c4e7ff", "secondary": "#7bd0ff", "on-primary": "#552100", "primary-fixed": "#ffdbca", "on-surface": "#dde2f8", "surface-container-highest": "#2f3445", "inverse-on-surface": "#2a3040", "on-primary-fixed": "#341100", "surface-tint": "#ffb690", "on-secondary-fixed-variant": "#004c69", "error": "#ffb4ab", "on-secondary": "#00354a", "surface-container": "#191f2f", "outline-variant": "#584237", "on-surface-variant": "#e0c0b1", "inverse-surface": "#dde2f8", "on-tertiary-fixed": "#002109", "on-secondary-fixed": "#001e2c", "primary-fixed-dim": "#ffb690", "surface": "#0d1322", "error-container": "#93000a", "surface-container-low": "#151b2b", "surface-container-lowest": "#080e1d", "primary-container": "#f97316", "surface-dim": "#0d1322", "tertiary-fixed-dim": "#4ae176", "on-tertiary": "#003915", "tertiary-fixed": "#6bff8f", "on-secondary-container": "#00374d", "surface-variant": "#2f3445", "secondary-fixed-dim": "#7bd0ff", "tertiary": "#4ae176", "outline": "#a78b7d", "background": "#0d1322", "surface-bright": "#33394a", "tertiary-container": "#00b251", "inverse-primary": "#9d4300", "on-error-container": "#ffdad6" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "space-md": "0.75rem", "gutter-desktop": "1rem", "gutter": "0.75rem", "space-xs": "0.25rem", "space-sm": "0.5rem", "space-xl": "1.5rem", "margin-desktop": "1.5rem", "margin": "1rem", "space-lg": "1rem" }, fontFamily: { "body-lg": ["Inter"], "body-sm": ["Inter"], "headline-md": ["Inter"], "headline-xl-mobile": ["Inter"], "label-sm": ["JetBrains Mono"], "headline-lg": ["Inter"], "body-md": ["Inter"], "headline-xl": ["Inter"], "label-lg": ["JetBrains Mono"], "label-md": ["JetBrains Mono"] }, fontSize: { "body-lg": ["15px", { "lineHeight": "22px", "fontWeight": "400" }], "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }], "headline-md": ["18px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "600" }], "headline-xl-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "label-sm": ["10px", { "lineHeight": "12px", "letterSpacing": "0.05em", "fontWeight": "600" }], "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "body-md": ["13px", { "lineHeight": "18px", "fontWeight": "400" }], "headline-xl": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "label-lg": ["13px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500" }], "label-md": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "500" }] } } } }</script><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface font-body-md text-on-surface antialiased min-h-screen flex flex-col"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.4)]"><div class="h-16 px-gutter flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm"><button aria-label="Toggle Navigation Drawer" class="w-11 h-11 flex items-center justify-center rounded text-on-surface hover:text-primary active:bg-surface-container" onclick="document.getElementById('scada-drawer').classList.toggle('-translate-x-full')" type="button"><span class="material-symbols-outlined text-[24px]">menu</span></button><img alt="GeoAlert AI Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VmrHHBtuimom0dJKmKl0QNf7IZY0Knjw47so3IWM7SZd8E1uBjGrcXvPPGA49tTGYxb1aS9fwnrvyR5-VesOalT-YjBDresAZSUwM8BNFkFXsEgjUThzBtbDPOPXo-NFznd1DecI3goSoNEQhdMy451wjeVE8rW3tTZ3s0Xe-Kc2r-rrbrPP5uPvWvZqMRb3IbssygU88rIlypz1aTsO65WdtNQNL2Q4z71DISXAJvpLF-u8vljswP"/><div class="flex flex-col"><div class="flex items-center gap-1"><span class="font-headline-md text-headline-md tracking-tight uppercase text-on-surface leading-none">GEOALERT AI</span></div><span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">ROCKFALL INTELLIGENCE</span></div></div><div class="flex items-center gap-space-xs"><div class="hidden xs:flex items-center gap-1.5 px-space-sm py-0.5 rounded bg-surface-container-high text-secondary font-label-sm text-label-sm uppercase tracking-wider"><span class="w-1.5 h-1.5 rounded-full bg-tertiary animate-pulse"></span><span>OPEN-PIT | NB-4B</span></div><a aria-label="Alerts" class="w-11 h-11 flex items-center justify-center rounded relative text-on-surface hover:text-primary active:bg-surface-container" data-path="alerts-and-notifications" href="#"><span class="material-symbols-outlined text-[22px]">notifications</span><span class="absolute top-2 right-2 w-4 h-4 bg-primary-container text-on-primary-container rounded-full font-label-sm text-[9px] flex items-center justify-center font-bold">3</span></a><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><div class="fixed inset-y-0 left-0 w-80 max-w-[85vw] bg-surface-container-lowest z-[60] transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col shadow-[4px_0_24px_rgba(0,0,0,0.8)]" id="scada-drawer"><div class="pt-safe px-gutter py-space-md bg-surface-container-low flex items-center justify-between"><div class="flex items-center gap-space-sm"><img alt="GeoAlert AI Logo" class="h-7 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VmrHHBtuimom0dJKmKl0QNf7IZY0Knjw47so3IWM7SZd8E1uBjGrcXvPPGA49tTGYxb1aS9fwnrvyR5-VesOalT-YjBDresAZSUwM8BNFkFXsEgjUThzBtbDPOPXo-NFznd1DecI3goSoNEQhdMy451wjeVE8rW3tTZ3s0Xe-Kc2r-rrbrPP5uPvWvZqMRb3IbssygU88rIlypz1aTsO65WdtNQNL2Q4z71DISXAJvpLF-u8vljswP"/><div class="flex flex-col"><span class="font-headline-md text-headline-md text-on-surface">GEOALERT AI</span><span class="font-label-sm text-label-sm text-primary">SYSTEM DIRECTORY</span></div></div><button class="w-11 h-11 flex items-center justify-center text-on-surface-variant hover:text-on-surface" onclick="document.getElementById('scada-drawer').classList.add('-translate-x-full')" type="button"><span class="material-symbols-outlined text-[22px]">close</span></button></div><div class="px-gutter py-space-xs bg-surface-container"><div class="flex items-center justify-between text-secondary font-label-sm text-label-sm uppercase"><span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-tertiary"></span>OPEN-PIT | NORTH BENCH 4B</span><span class="text-on-surface-variant font-label-sm">GRID: Z-12</span></div></div><div class="flex-1 overflow-y-auto px-gutter py-space-sm space-y-0.5"><div class="px-space-sm py-space-xs font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Operational Modules</div><a class="flex items-center gap-space-md px-space-md py-space-sm rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container active:bg-surface-container-high transition-colors" data-path="overview" href="#"><span class="material-symbols-outlined text-[20px]">grid_view</span><span class="font-body-md text-body-md font-medium">Overview (Dashboard)</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container active:bg-surface-container-high transition-colors" data-path="open-pit-monitoring" href="#"><span class="material-symbols-outlined text-[20px]">landscape</span><span class="font-body-md text-body-md font-medium">Open-Pit Monitoring</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container active:bg-surface-container-high transition-colors" data-path="underground-monitoring" href="#"><span class="material-symbols-outlined text-[20px]">radar</span><span class="font-body-md text-body-md font-medium">Underground Monitoring</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container active:bg-surface-container-high transition-colors" data-path="risk-predictions" href="#"><span class="material-symbols-outlined text-[20px]">analytics</span><span class="font-body-md text-body-md font-medium">Risk Predictions</span></a><a class="flex items-center justify-between px-space-md py-space-sm rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container active:bg-surface-container-high transition-colors" data-path="alerts-and-notifications" href="#"><div class="flex items-center gap-space-md"><span class="material-symbols-outlined text-[20px]">crisis_alert</span><span class="font-body-md text-body-md font-medium">Alerts &amp; Notifications</span></div><span class="px-1.5 py-0.5 rounded bg-primary-container text-on-primary-container font-label-sm text-label-sm font-bold">3 CRIT</span></a><div class="pt-space-sm px-space-sm py-space-xs font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Data &amp; Utilities</div><a class="flex items-center gap-space-md px-space-md py-space-sm rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container active:bg-surface-container-high transition-colors" data-path="data-and-uploads" href="#"><span class="material-symbols-outlined text-[20px]">upload_file</span><span class="font-body-md text-body-md font-medium">Data &amp; Uploads</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container active:bg-surface-container-high transition-colors" data-path="reports-and-analytics" href="#"><span class="material-symbols-outlined text-[20px]">summarize</span><span class="font-body-md text-body-md font-medium">Reports &amp; Analytics</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container active:bg-surface-container-high transition-colors" data-path="help-desk" href="#"><span class="material-symbols-outlined text-[20px]">support_agent</span><span class="font-body-md text-body-md font-medium">Help Desk</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container active:bg-surface-container-high transition-colors" data-path="system-settings" href="#"><span class="material-symbols-outlined text-[20px]">settings</span><span class="font-body-md text-body-md font-medium">System / Settings</span></a></div><div class="pb-safe p-gutter bg-surface-container-low space-y-1"><div class="flex items-center justify-between text-on-surface font-label-sm text-label-sm"><span class="text-tertiary flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>STATUS: OPERATIONAL v2.4.1</span><span class="text-secondary font-label-sm">LAT: 42ms</span></div><div class="flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm"><span>OFFLINE CACHE: READY</span><span class="material-symbols-outlined text-[14px] text-tertiary">cloud_done</span></div></div></div><main class="flex-1 flex flex-col relative w-full pt-16 pb-20 bg-surface min-h-[calc(100vh-5rem)]"><div class="flex flex-col w-full px-gutter py-space-sm space-y-space-md max-w-7xl mx-auto">
+<!-- Operational Header & Sector Context -->
+<div class="flex flex-col gap-space-xs bg-surface-container-low p-space-md rounded-lg shadow-sm">
+<div class="flex flex-wrap items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-sm">
+<span class="p-1.5 rounded bg-primary-container/20 text-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">landscape</span>
+</span>
+<div>
+<h1 class="font-headline-md text-headline-md text-on-surface">Open-Pit Geotechnical Monitoring</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Bench Slope Stability, InSAR Radar &amp; Pit Crest Dynamics</p>
+</div>
+</div>
+<div class="relative">
+<button class="flex items-center gap-2 px-space-md py-1.5 rounded bg-surface-container-high hover:bg-surface-container-highest text-on-surface transition-colors" id="sector-pill-btn" onclick="toggleSectorDropdown()">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
+<span class="font-label-md text-label-md tracking-wide uppercase">Sector 4 — North Bench Wall (Highwall C)</span>
+<span class="material-symbols-outlined text-[16px] text-secondary">expand_more</span>
+</button>
+<div class="hidden absolute right-0 mt-1 w-72 bg-surface-container-highest shadow-xl rounded-lg z-30 p-1 space-y-0.5" id="sector-dropdown">
+<div class="px-space-sm py-1 font-label-sm text-label-sm text-on-surface-variant uppercase">Select Open-Pit Zone</div>
+<button class="w-full text-left px-space-sm py-1.5 rounded bg-surface-container text-primary font-label-md text-label-md flex items-center justify-between" onclick="selectSector('Sector 4 — North Bench Wall (Highwall C)')">
+<span>Sec 4: Highwall C (Critical)</span>
+<span class="material-symbols-outlined text-[14px]">check</span>
+</button>
+<button class="w-full text-left px-space-sm py-1.5 rounded hover:bg-surface-container text-on-surface font-label-md text-label-md flex items-center justify-between" onclick="selectSector('Sector 2 — South Ramp Bench 6B')">
+<span>Sec 2: South Ramp 6B (Nominal)</span>
+</button>
+<button class="w-full text-left px-space-sm py-1.5 rounded hover:bg-surface-container text-on-surface font-label-md text-label-md flex items-center justify-between" onclick="selectSector('Sector 7 — East Pit Crest Portal')">
+<span>Sec 7: East Crest Portal (Watch)</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Real-time Pit Wall Surveillance Image & Radar Overlay -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-sm">
+<div class="md:col-span-2 relative h-48 md:h-56 rounded-lg overflow-hidden bg-surface-container-lowest shadow-inner group">
+<img class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700 ease-out" data-alt="High-resolution industrial telephoto capture of an active open-pit copper mine bench highwall. Prominent rock strata, steep bench angles, safety berms, and geotechnical prisms visible under overcast, dusty lighting with subtle cyan and amber digital strain heatmap overlays, SCADA aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmmj8y-JcoU7_NEeQ4SzsCa3d6CS1ut_U73bXBDzPjwAvx5eCmOUczuq5eEy-hMSFlEmAkhhdjYcHKyKX5lD0t1AgFHB3kmlybD-TSuWdsDLjSQ8iWml81bGZlfLinAj5khruY_zrags8Ss5eFVgKaz2uO56ycLLOv-ozlifBDGAvKzztjOSZE60vDVySuDdPF58J4fs-9jmG69J8DxseaQX9pw_h6IHARvcROvtCKslItoG9Y8-Y"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/40 to-transparent"></div>
+<div class="absolute top-2 left-2 flex items-center gap-1.5 px-2 py-0.5 rounded bg-surface-container-lowest/80 backdrop-blur font-label-sm text-label-sm text-secondary">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container animate-ping"></span>
+<span>CAM-08 NW HIGHWALL [LIVE STREAM 30 FPS]</span>
+</div>
+<div class="absolute bottom-2 left-2 right-2 flex items-end justify-between">
+<div class="bg-surface-container-lowest/85 backdrop-blur p-2 rounded max-w-sm">
+<span class="font-label-sm text-label-sm text-primary uppercase block">InSAR Radar Heatmap Alert</span>
+<span class="font-body-sm text-body-sm text-on-surface">Active differential strain detected along planar joint set J-14B near berm toe.</span>
+</div>
+<div class="hidden sm:flex flex-col items-end gap-1 font-label-sm text-label-sm bg-surface-container-lowest/80 px-2 py-1 rounded text-on-surface-variant">
+<span>STATION: LEICA TM50</span>
+<span>DISPLACEMENT: +6.2mm</span>
+</div>
+</div>
+</div>
+<!-- Acoustic & Seismograph Metric Tile -->
+<div class="bg-surface-container p-space-md rounded-lg flex flex-col justify-between shadow-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-primary">graphic_eq</span>
+<span class="font-label-md text-label-md text-on-surface uppercase">Acoustic Telemetry</span>
+</div>
+<span class="px-1.5 py-0.5 rounded bg-surface-container-high text-tertiary font-label-sm text-label-sm">LIVE FEED</span>
+</div>
+<div class="space-y-1 my-2">
+<div class="flex items-baseline justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Microseismic Pulse Rate</span>
+<span class="font-label-lg text-label-lg text-primary font-bold">14.8 <span class="font-label-sm text-label-sm text-on-surface-variant">ev/hr</span></span>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded overflow-hidden">
+<div class="bg-primary-container h-full rounded transition-all duration-500" style="width: 74%;"></div>
+</div>
+<div class="flex justify-between font-label-sm text-label-sm text-on-surface-variant pt-1">
+<span>Baseline: 3.2</span>
+<span class="text-error font-medium">Critical Threshold: 12.0</span>
+</div>
+</div>
+<div class="bg-surface-container-high p-2 rounded flex items-center justify-between text-on-surface font-label-sm text-label-sm">
+<span class="text-on-surface-variant">Radar Target Prism:</span>
+<span class="text-secondary font-mono">PRISM-NW-118</span>
+</div>
+</div>
+</div>
+<!-- Real-time Risk Assessment Summary Banner -->
+<div class="bg-surface-container-high p-space-md rounded-lg shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-md">
+<div class="flex items-start gap-space-md">
+<div class="p-2 rounded bg-error-container/30 text-error flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[28px]">warning</span>
+</div>
+<div class="space-y-0.5">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded bg-error-container text-on-error-container font-label-sm text-label-sm font-bold tracking-wider uppercase flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-error animate-ping"></span>
+            ELEVATED ROCKFALL HAZARD
+          </span>
+<span class="font-label-sm text-label-sm text-primary-fixed">SECTOR 4 CRITICAL</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface">
+          Active extensional kinematics recorded at bench crest. Microfracturing velocity surged 32% since 04:00 UTC.
+        </p>
+<div class="flex flex-wrap items-center gap-x-4 gap-y-1 pt-1 font-label-sm text-label-sm text-secondary">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">width_full</span>
+            Tension crack dilation: <span class="font-bold text-error">4.8mm / 24h</span>
+</span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">rainy</span>
+            Rainfall 72h: <span class="font-bold text-on-surface">46.0 mm</span>
+</span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">vibration</span>
+            Last Blast Vibration: <span class="font-bold text-on-surface">14.2 mm/s</span>
+</span>
+</div>
+</div>
+</div>
+<div class="flex sm:flex-col items-center sm:items-end gap-2 w-full sm:w-auto shrink-0">
+<button class="w-full sm:w-auto px-space-md py-1.5 bg-primary text-on-primary font-headline-md text-body-md rounded shadow hover:bg-primary-fixed transition-colors flex items-center justify-center gap-1.5" onclick="scrollToInference()">
+<span class="material-symbols-outlined text-[18px]">psychology</span>
+<span>Inspect ML Model</span>
+</button>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Sync: 12 sec ago</span>
+</div>
+</div>
+<!-- Machine Learning Prediction Input Section -->
+<div class="bg-surface-container p-space-md rounded-lg shadow-sm space-y-space-md" id="ml-input-section">
+<div class="flex items-center justify-between pb-2 bg-surface-container-low p-space-sm rounded">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">tune</span>
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface leading-tight">Geomechanical Hazard Inference Model</h2>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Streamlit-Integrated Feature Inputs • Model: Random Forest Ensemble v3.2</span>
+</div>
+</div>
+<button class="text-on-surface-variant hover:text-primary p-1 rounded font-label-sm text-label-sm flex items-center gap-1" onclick="resetModelParameters()">
+<span class="material-symbols-outlined text-[16px]">restart_alt</span>
+<span class="hidden sm:inline">Reset Defaults</span>
+</button>
+</div>
+<!-- Parameter Input Groups -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md">
+<!-- Group 1: Slope & Geometry -->
+<div class="bg-surface-container-low p-space-md rounded space-y-space-sm">
+<div class="flex items-center gap-1.5 pb-1">
+<span class="material-symbols-outlined text-[16px] text-secondary">architecture</span>
+<span class="font-label-md text-label-md text-secondary font-bold uppercase">1. Slope &amp; Geometry</span>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between items-center font-label-sm text-label-sm">
+<label class="text-on-surface" for="bench-angle">Bench Face Angle (θ)</label>
+<span class="font-mono text-primary font-bold" id="bench-angle-val">68°</span>
+</div>
+<input class="w-full h-1.5 bg-surface-container-high rounded accent-primary cursor-pointer" id="bench-angle" max="85" min="45" oninput="updateRangeVal('bench-angle', 'bench-angle-val', '°')" type="range" value="68"/>
+<div class="flex justify-between font-label-sm text-[10px] text-on-surface-variant">
+<span>45° (Shallow)</span>
+<span>85° (Vertical)</span>
+</div>
+</div>
+<div class="space-y-1 pt-1">
+<div class="flex justify-between items-center font-label-sm text-label-sm">
+<label class="text-on-surface" for="slope-height">Slope Height (H)</label>
+<div class="flex items-center gap-1">
+<input class="w-16 bg-surface-container-high text-on-surface text-center font-mono font-label-md text-label-md rounded p-1 focus:bg-surface-container-highest outline-none" id="slope-height" max="150" min="10" type="number" value="45"/>
+<span class="text-on-surface-variant font-label-sm text-label-sm">m</span>
+</div>
+</div>
+</div>
+<div class="space-y-1 pt-1">
+<div class="flex justify-between items-center font-label-sm text-label-sm">
+<label class="text-on-surface" for="pit-slope">Overall Pit Slope Angle</label>
+<span class="font-mono text-secondary font-bold" id="pit-slope-val">42°</span>
+</div>
+<input class="w-full h-1.5 bg-surface-container-high rounded accent-secondary cursor-pointer" id="pit-slope" max="60" min="30" oninput="updateRangeVal('pit-slope', 'pit-slope-val', '°')" type="range" value="42"/>
+<div class="flex justify-between font-label-sm text-[10px] text-on-surface-variant">
+<span>30°</span>
+<span>60°</span>
+</div>
+</div>
+</div>
+<!-- Group 2: Geological & Rock Mass -->
+<div class="bg-surface-container-low p-space-md rounded space-y-space-sm">
+<div class="flex items-center gap-1.5 pb-1">
+<span class="material-symbols-outlined text-[16px] text-secondary">terrain</span>
+<span class="font-label-md text-label-md text-secondary font-bold uppercase">2. Geological &amp; Rock Mass</span>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between items-center font-label-sm text-label-sm">
+<label class="text-on-surface" for="rmr-rating">RMR (Rock Mass Rating)</label>
+<span class="font-mono text-tertiary font-bold bg-surface-container-high px-1.5 py-0.5 rounded" id="rmr-badge">48 (Fair)</span>
+</div>
+<input class="w-full h-1.5 bg-surface-container-high rounded accent-tertiary cursor-pointer" id="rmr-rating" max="100" min="0" oninput="updateRMR('rmr-rating', 'rmr-badge')" type="range" value="48"/>
+<div class="flex justify-between font-label-sm text-[10px] text-on-surface-variant">
+<span>0 (Very Poor)</span>
+<span>100 (Very Good)</span>
+</div>
+</div>
+<div class="space-y-1 pt-1">
+<div class="flex justify-between items-center font-label-sm text-label-sm">
+<label class="text-on-surface" for="gsi-index">GSI (Strength Index)</label>
+<div class="flex items-center gap-1">
+<input class="w-16 bg-surface-container-high text-on-surface text-center font-mono font-label-md text-label-md rounded p-1 focus:bg-surface-container-highest outline-none" id="gsi-index" max="90" min="10" type="number" value="52"/>
+<span class="text-on-surface-variant font-label-sm text-label-sm">/ 100</span>
+</div>
+</div>
+</div>
+<div class="space-y-1 pt-1">
+<div class="flex justify-between items-center font-label-sm text-label-sm">
+<label class="text-on-surface" for="joint-spacing">Joint Discontinuity Spacing</label>
+<div class="flex items-center gap-1">
+<input class="w-16 bg-surface-container-high text-on-surface text-center font-mono font-label-md text-label-md rounded p-1 focus:bg-surface-container-highest outline-none" id="joint-spacing" max="3.0" min="0.05" step="0.05" type="number" value="0.35"/>
+<span class="text-on-surface-variant font-label-sm text-label-sm">m</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Group 3: Hydro & Environmental -->
+<div class="bg-surface-container-low p-space-md rounded space-y-space-sm">
+<div class="flex items-center gap-1.5 pb-1">
+<span class="material-symbols-outlined text-[16px] text-secondary">water_drop</span>
+<span class="font-label-md text-label-md text-secondary font-bold uppercase">3. Hydro &amp; Environmental</span>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between items-center font-label-sm text-label-sm">
+<label class="text-on-surface" for="gw-depth">Water Table Depth</label>
+<span class="font-mono text-primary-container font-bold" id="gw-depth-val">18 m</span>
+</div>
+<input class="w-full h-1.5 bg-surface-container-high rounded accent-primary-container cursor-pointer" id="gw-depth" max="60" min="1" oninput="updateRangeVal('gw-depth', 'gw-depth-val', ' m')" type="range" value="18"/>
+<div class="flex justify-between font-label-sm text-[10px] text-on-surface-variant">
+<span>1m (Saturated)</span>
+<span>60m (Dry)</span>
+</div>
+</div>
+<div class="space-y-1 pt-1">
+<div class="flex justify-between items-center font-label-sm text-label-sm">
+<label class="text-on-surface" for="precip-24h">24h Cumulative Precip</label>
+<div class="flex items-center gap-1">
+<input class="w-16 bg-surface-container-high text-on-surface text-center font-mono font-label-md text-label-md rounded p-1 focus:bg-surface-container-highest outline-none" id="precip-24h" max="250" min="0" step="0.1" type="number" value="28.4"/>
+<span class="text-on-surface-variant font-label-sm text-label-sm">mm</span>
+</div>
+</div>
+</div>
+<div class="space-y-1 pt-1">
+<div class="flex justify-between items-center font-label-sm text-label-sm">
+<label class="text-on-surface" for="blast-ppv">Blast Vibration (PPV)</label>
+<div class="flex items-center gap-1">
+<input class="w-16 bg-surface-container-high text-on-surface text-center font-mono font-label-md text-label-md rounded p-1 focus:bg-surface-container-highest outline-none" id="blast-ppv" max="100" min="0" step="0.1" type="number" value="14.2"/>
+<span class="text-on-surface-variant font-label-sm text-label-sm">mm/s</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Inference Execution CTA -->
+<div class="flex flex-col sm:flex-row items-center justify-between gap-space-sm pt-space-xs">
+<div class="flex items-center gap-2 text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px] text-tertiary">offline_bolt</span>
+<span>GPU Accelerator: NVIDIA CUDA Compute Unit 0 (Ready)</span>
+</div>
+<button class="w-full sm:w-auto px-space-xl py-space-sm bg-primary-container hover:opacity-90 active:scale-[0.98] text-on-primary-container font-headline-md text-body-lg rounded shadow-lg transition-all flex items-center justify-center gap-space-sm font-semibold" id="run-inference-btn" onclick="executeInference()">
+<span class="material-symbols-outlined text-[20px]" id="inference-icon">smart_toy</span>
+<span id="inference-text">Run Open-Pit Hazard Inference</span>
+</button>
+</div>
+</div>
+<!-- Model Prediction Result Panel (Simulated output state) -->
+<div class="bg-surface-container p-space-md rounded-lg shadow-sm space-y-space-md transition-all duration-300" id="result-panel">
+<div class="flex flex-wrap items-center justify-between gap-2 pb-2 bg-surface-container-low p-space-sm rounded">
+<div class="flex items-center gap-2">
+<span class="p-1 rounded bg-error-container text-on-error-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">gavel</span>
+</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Inference Prediction Classification</h3>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Model Confidence:</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-secondary font-mono font-bold font-label-sm text-label-sm">91.4% P-Value</span>
+</div>
+</div>
+<!-- Core Result Card -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<div class="bg-surface-container-low p-space-md rounded-lg flex flex-col justify-between space-y-space-sm">
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider block">Risk Severity Assessment</span>
+<div class="flex items-center gap-2 mt-1">
+<span class="px-3 py-1 rounded bg-error-container text-on-error-container font-headline-md text-headline-md font-bold tracking-tight uppercase flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[20px]">crisis_alert</span>
+              HIGH RISK (CLASS 4 / 5)
+            </span>
+</div>
+<div class="mt-space-sm">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Predicted Kinematic Mechanism:</span>
+<div class="font-headline-md text-body-lg text-primary font-semibold mt-0.5">
+              Planar Sliding / Wedge Failure Susceptible
+            </div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+              Critical daylighting of joint set J-1 (dip 62° / dip direction 215°) exceeds the bench face friction cone angle (φ = 34°).
+            </p>
+</div>
+</div>
+<!-- Prescribed SOP Action Box -->
+<div class="bg-error-container/20 p-space-sm rounded space-y-1">
+<div class="flex items-center gap-1.5 text-error">
+<span class="material-symbols-outlined text-[18px]">verified_user</span>
+<span class="font-label-md text-label-md font-bold uppercase tracking-wider">Mandatory SOP Protocol Initiated</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface font-medium">
+            “Cease haul truck traffic on Ramp 3B; deploy secondary radar prism check; alert Geotech Chief immediately.”
+          </p>
+<div class="flex items-center justify-between pt-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">ACTION CODE: GEO-EVAC-3B</span>
+<button class="px-2 py-1 rounded bg-error text-on-error hover:bg-error-container font-label-sm text-label-sm font-semibold flex items-center gap-1 transition-colors" id="dispatch-btn" onclick="dispatchAlertSms()">
+<span class="material-symbols-outlined text-[14px]">send</span>
+<span>Transmit Dispatch</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Explainable AI / Feature Importance -->
+<div class="bg-surface-container-low p-space-md rounded-lg flex flex-col justify-between space-y-space-sm">
+<div>
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface font-semibold uppercase">Explainable AI (XAI) Attribution</span>
+<span class="font-label-sm text-label-sm text-secondary font-mono">SHAP Feature Weights</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+            Key geotechnical variables driving model instability score:
+          </p>
+</div>
+<div class="space-y-space-sm">
+<!-- Feature 1 -->
+<div class="space-y-1">
+<div class="flex justify-between items-center font-label-sm text-label-sm">
+<span class="text-on-surface">1. Tension Crack Velocity Dilation</span>
+<span class="text-error font-mono font-bold">+42% Impact</span>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded overflow-hidden">
+<div class="bg-error h-full rounded" style="width: 84%;"></div>
+</div>
+</div>
+<!-- Feature 2 -->
+<div class="space-y-1">
+<div class="flex justify-between items-center font-label-sm text-label-sm">
+<span class="text-on-surface">2. Blast Peak Particle Velocity (PPV)</span>
+<span class="text-primary-container font-mono font-bold">+28% Impact</span>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded overflow-hidden">
+<div class="bg-primary-container h-full rounded" style="width: 56%;"></div>
+</div>
+</div>
+<!-- Feature 3 -->
+<div class="space-y-1">
+<div class="flex justify-between items-center font-label-sm text-label-sm">
+<span class="text-on-surface">3. Joint Water Infiltration (Hydrostatic)</span>
+<span class="text-secondary font-mono font-bold">+18% Impact</span>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded overflow-hidden">
+<div class="bg-secondary h-full rounded" style="width: 36%;"></div>
+</div>
+</div>
+<!-- Feature 4 (Minor) -->
+<div class="space-y-1">
+<div class="flex justify-between items-center font-label-sm text-label-sm">
+<span class="text-on-surface-variant">4. Bench Face Angle Over-steepening</span>
+<span class="text-on-surface-variant font-mono">+12% Impact</span>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded overflow-hidden">
+<div class="bg-on-surface-variant h-full rounded" style="width: 24%;"></div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container p-2 rounded flex items-center justify-between font-label-sm text-label-sm">
+<span class="text-on-surface-variant">Model Convergence Residual:</span>
+<span class="text-tertiary font-mono">0.0014 mm √s</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Historical Open-Pit Risk Chart (14-Day Progression) -->
+<div class="bg-surface-container p-space-md rounded-lg shadow-sm space-y-space-sm">
+<div class="flex flex-wrap items-center justify-between gap-space-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px] text-secondary">show_chart</span>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">14-Day Hazard Progression &amp; Blast Events</h3>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Sector 4 Displacement Trend vs Production Blast Shocks</span>
+</div>
+</div>
+<div class="flex items-center gap-4 font-label-sm text-label-sm">
+<span class="flex items-center gap-1.5 text-error">
+<span class="w-2.5 h-2.5 rounded bg-error"></span>
+          Risk Score (0-100)
+        </span>
+<span class="flex items-center gap-1.5 text-primary">
+<span class="w-2.5 h-2.5 rounded bg-primary-container"></span>
+          Blast Event (PPV)
+        </span>
+</div>
+</div>
+<!-- Scalable High-Tech Inline SVG SCADA Chart -->
+<div class="w-full bg-surface-container-low p-space-sm rounded overflow-hidden">
+<div class="relative w-full aspect-[21/9] min-h-[190px]">
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 700 220">
+<defs>
+<lineargradient id="riskGrad" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#ffb4ab" stop-opacity="0.35"></stop>
+<stop offset="100%" stop-color="#ffb4ab" stop-opacity="0.0"></stop>
+</lineargradient>
+<lineargradient id="blastGrad" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#f97316" stop-opacity="0.8"></stop>
+<stop offset="100%" stop-color="#f97316" stop-opacity="0.1"></stop>
+</lineargradient>
+</defs>
+<!-- Grid Lines -->
+<line stroke="#242a3a" stroke-dasharray="3,3" stroke-width="1" x1="40" x2="680" y1="20" y2="20"></line>
+<line stroke="#242a3a" stroke-dasharray="3,3" stroke-width="1" x1="40" x2="680" y1="65" y2="65"></line>
+<line stroke="#242a3a" stroke-dasharray="3,3" stroke-width="1" x1="40" x2="680" y1="110" y2="110"></line>
+<line stroke="#242a3a" stroke-dasharray="3,3" stroke-width="1" x1="40" x2="680" y1="155" y2="155"></line>
+<line stroke="#242a3a" stroke-width="1.5" x1="40" x2="680" y1="190" y2="190"></line>
+<!-- Y-Axis Labels -->
+<text fill="#e0c0b1" font-family="JetBrains Mono" font-size="9" x="10" y="24">CRIT 80</text>
+<text fill="#e0c0b1" font-family="JetBrains Mono" font-size="9" x="10" y="69">WARN 60</text>
+<text fill="#e0c0b1" font-family="JetBrains Mono" font-size="9" x="10" y="114">NORM 40</text>
+<text fill="#e0c0b1" font-family="JetBrains Mono" font-size="9" x="10" y="159">LOW 20</text>
+<!-- Blast Events Bars (e.g. Day 4, Day 9, Day 13) -->
+<!-- Blast 1: Day 4 -->
+<rect fill="url(#blastGrad)" height="75" rx="1" width="12" x="210" y="115"></rect>
+<text fill="#ffb690" font-family="JetBrains Mono" font-size="8" text-anchor="middle" x="216" y="108">BLAST 1</text>
+<!-- Blast 2: Day 9 -->
+<rect fill="url(#blastGrad)" height="110" rx="1" width="12" x="440" y="80"></rect>
+<text fill="#ffb690" font-family="JetBrains Mono" font-size="8" text-anchor="middle" x="446" y="73">BLAST 2</text>
+<!-- Blast 3: Day 13 (High magnitude) -->
+<rect fill="url(#blastGrad)" height="145" rx="1" width="12" x="610" y="45"></rect>
+<text fill="#f97316" font-family="JetBrains Mono" font-size="8" font-weight="bold" text-anchor="middle" x="616" y="38">HEAVY SHOT</text>
+<!-- Risk Score Area Fill -->
+<polygon fill="url(#riskGrad)" points="
+            50,165 
+            95,160 
+            140,155 
+            185,152 
+            230,135 
+            275,138 
+            320,130 
+            365,124 
+            410,118 
+            455,90 
+            500,82 
+            545,78 
+            590,52 
+            635,35 
+            670,30
+            670,190
+            50,190
+          "></polygon>
+<!-- Risk Score Polyline -->
+<polyline fill="none" points="
+            50,165 
+            95,160 
+            140,155 
+            185,152 
+            230,135 
+            275,138 
+            320,130 
+            365,124 
+            410,118 
+            455,90 
+            500,82 
+            545,78 
+            590,52 
+            635,35 
+            670,30
+          " stroke="#ffb4ab" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></polyline>
+<!-- Highlight Nodes along Risk Polyline -->
+<circle cx="230" cy="135" fill="#0d1322" r="3.5" stroke="#ffb4ab" stroke-width="2"></circle>
+<circle cx="455" cy="90" fill="#0d1322" r="3.5" stroke="#ffb4ab" stroke-width="2"></circle>
+<circle cx="635" cy="35" fill="#93000a" r="4.5" stroke="#ffb4ab" stroke-width="2"></circle>
+<circle cx="670" cy="30" fill="#f97316" r="4.5" stroke="#ffffff" stroke-width="2"></circle>
+<!-- Critical Threshold Alarm Line (Level 75) -->
+<line opacity="0.8" stroke="#ffb4ab" stroke-dasharray="5,4" stroke-width="1.5" x1="40" x2="680" y1="40" y2="40"></line>
+<text fill="#ffb4ab" font-family="JetBrains Mono" font-size="8" x="630" y="32">CRITICAL 75</text>
+<!-- X-Axis Timeline Markers -->
+<text fill="#e0c0b1" font-family="JetBrains Mono" font-size="8" text-anchor="middle" x="50" y="206">D-14</text>
+<text fill="#e0c0b1" font-family="JetBrains Mono" font-size="8" text-anchor="middle" x="140" y="206">D-12</text>
+<text fill="#e0c0b1" font-family="JetBrains Mono" font-size="8" text-anchor="middle" x="230" y="206">D-10</text>
+<text fill="#e0c0b1" font-family="JetBrains Mono" font-size="8" text-anchor="middle" x="320" y="206">D-8</text>
+<text fill="#e0c0b1" font-family="JetBrains Mono" font-size="8" text-anchor="middle" x="410" y="206">D-6</text>
+<text fill="#e0c0b1" font-family="JetBrains Mono" font-size="8" text-anchor="middle" x="500" y="206">D-4</text>
+<text fill="#e0c0b1" font-family="JetBrains Mono" font-size="8" text-anchor="middle" x="590" y="206">D-2</text>
+<text fill="#f97316" font-family="JetBrains Mono" font-size="8" font-weight="bold" text-anchor="middle" x="670" y="206">TODAY</text>
+</svg>
+</div>
+<div class="flex flex-wrap items-center justify-between text-on-surface-variant font-label-sm text-label-sm pt-2 px-1">
+<span>* Production Blast shot on D-2 triggered progressive crack dilation (+18mm peak vector).</span>
+<span class="text-secondary font-mono">SAMPLING: 10 MIN INTERVALS</span>
+</div>
+</div>
+</div>
+<!-- Field Geotech Photo Spot Check & Berm Inspection Log -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-sm pb-space-sm">
+<!-- Visual Berm Crest Assessment -->
+<div class="bg-surface-container p-space-md rounded-lg space-y-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-primary">photo_camera</span>
+<span class="font-label-md text-label-md text-on-surface uppercase">Prism Drone Reconnaissance</span>
+</div>
+<span class="font-label-sm text-label-sm text-tertiary">08:15 LOCAL</span>
+</div>
+<div class="relative h-36 rounded overflow-hidden bg-surface-container-lowest">
+<img class="w-full h-full object-cover" data-alt="High-resolution aerial UAV drone photography inspecting the safety berm crest and haul road cut in an open-pit mine. Clear visible planar rock fracture fissure marked with digital telemetry callout tags in industrial safety orange and cyan, photorealistic geomechanical documentation." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTFlo_-TsPlWqgtI7qhfLnCmFrjTkTwbI69DZap7tiYkMpF6RSFCbWrx4dMuwyrnsmpZ49QP6CrbHEB8-1q2gBWU013qsuVmi3IbvRIwseIwQQej9ia2piimdsXivzQOvRH7PaC4Y0_Zx7pJPEhAeKKoZnTHSJnQEL4WwgwGA0xmU9974IVaezz5htYzgJqv7URyj37dnhMyg-4Flon4XvxgbZ7cPJYlkCdX8CKRSRV_S8HBvR9Ws"/>
+<div class="absolute bottom-2 left-2 bg-surface-container-lowest/80 px-2 py-1 rounded backdrop-blur font-label-sm text-label-sm text-on-surface">
+<span>CREST BERM-4B: Crack #TC-19</span>
+</div>
+</div>
+<div class="flex items-center justify-between text-body-sm text-on-surface-variant">
+<span>Prism Target Distance: 142.4 m</span>
+<span class="text-error font-medium">Extension: +1.2 mm/6h</span>
+</div>
+</div>
+<!-- Rapid Telemetry Action Feed -->
+<div class="bg-surface-container p-space-md rounded-lg space-y-space-sm flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-secondary">alt_route</span>
+<span class="font-label-md text-label-md text-on-surface uppercase">Haulage &amp; Dispatch Routing</span>
+</div>
+<span class="px-1.5 py-0.5 rounded bg-surface-container-high text-primary font-label-sm text-label-sm">RAMP CONTROLS</span>
+</div>
+<div class="space-y-2">
+<div class="p-2 rounded bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-error"></span>
+<div>
+<div class="font-headline-md text-body-md text-on-surface font-semibold">Ramp 3B (North Haul Route)</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Restricted • Emergency Access Only</span>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded bg-error-container text-on-error-container font-label-sm text-label-sm font-bold uppercase">CLOSED</span>
+</div>
+<div class="p-2 rounded bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary"></span>
+<div>
+<div class="font-headline-md text-body-md text-on-surface font-semibold">Ramp 1A (South Bypass Route)</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">All CAT 793 Haul Fleets Diverted</span>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-tertiary font-label-sm text-label-sm font-bold uppercase">OPEN</span>
+</div>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm pt-1">
+<span>Automated Dispatch Sync: ACTIVE</span>
+<button class="text-secondary hover:underline flex items-center gap-1" onclick="requestRadarCalibration()">
+<span class="material-symbols-outlined text-[14px]">refresh</span>
+          Re-calibrate Radar
+        </button>
+</div>
+</div>
+</div>
+</div>
+<script>
+  function toggleSectorDropdown() {
+    const el = document.getElementById('sector-dropdown');
+    if (el) el.classList.toggle('hidden');
+  }
+
+  function selectSector(name) {
+    const btn = document.getElementById('sector-pill-btn');
+    if (btn) {
+      btn.innerHTML = `
+        <span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
+        <span class="font-label-md text-label-md tracking-wide uppercase">${name}</span>
+        <span class="material-symbols-outlined text-[16px] text-secondary">expand_more</span>
+      `;
+    }
+    toggleSectorDropdown();
+  }
+
+  function updateRangeVal(sliderId, displayId, suffix) {
+    const slider = document.getElementById(sliderId);
+    const display = document.getElementById(displayId);
+    if (slider && display) {
+      display.textContent = slider.value + suffix;
+    }
+  }
+
+  function updateRMR(sliderId, displayId) {
+    const slider = document.getElementById(sliderId);
+    const display = document.getElementById(displayId);
+    if (!slider || !display) return;
+    const val = parseInt(slider.value, 10);
+    let label = "Very Poor";
+    let color = "text-error";
+    if (val >= 81) { label = "Very Good"; color = "text-tertiary"; }
+    else if (val >= 61) { label = "Good"; color = "text-tertiary"; }
+    else if (val >= 41) { label = "Fair"; color = "text-primary"; }
+    else if (val >= 21) { label = "Poor"; color = "text-error"; }
+    display.textContent = `${val} (${label})`;
+    display.className = `font-mono ${color} font-bold bg-surface-container-high px-1.5 py-0.5 rounded`;
+  }
+
+  function scrollToInference() {
+    const target = document.getElementById('ml-input-section');
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  function resetModelParameters() {
+    const bAngle = document.getElementById('bench-angle');
+    if (bAngle) { bAngle.value = 68; updateRangeVal('bench-angle', 'bench-angle-val', '°'); }
+    const sHeight = document.getElementById('slope-height');
+    if (sHeight) sHeight.value = 45;
+    const pSlope = document.getElementById('pit-slope');
+    if (pSlope) { pSlope.value = 42; updateRangeVal('pit-slope', 'pit-slope-val', '°'); }
+    const rmr = document.getElementById('rmr-rating');
+    if (rmr) { rmr.value = 48; updateRMR('rmr-rating', 'rmr-badge'); }
+    const gsi = document.getElementById('gsi-index');
+    if (gsi) gsi.value = 52;
+    const joint = document.getElementById('joint-spacing');
+    if (joint) joint.value = 0.35;
+    const gw = document.getElementById('gw-depth');
+    if (gw) { gw.value = 18; updateRangeVal('gw-depth', 'gw-depth-val', ' m'); }
+    const p24 = document.getElementById('precip-24h');
+    if (p24) p24.value = 28.4;
+    const ppv = document.getElementById('blast-ppv');
+    if (ppv) ppv.value = 14.2;
+  }
+
+  function executeInference() {
+    const btn = document.getElementById('run-inference-btn');
+    const text = document.getElementById('inference-text');
+    const icon = document.getElementById('inference-icon');
+    const resultPanel = document.getElementById('result-panel');
+
+    if (!btn || !text || !icon) return;
+
+    btn.disabled = true;
+    text.textContent = "Computing Geotechnical Tensor...";
+    icon.textContent = "sync";
+    icon.classList.add("animate-spin");
+
+    setTimeout(() => {
+      btn.disabled = false;
+      text.textContent = "Inference Updated";
+      icon.textContent = "task_alt";
+      icon.classList.remove("animate-spin");
+
+      if (resultPanel) {
+        resultPanel.classList.add("bg-surface-container-high");
+        setTimeout(() => resultPanel.classList.remove("bg-surface-container-high"), 400);
+      }
+
+      setTimeout(() => {
+        text.textContent = "Run Open-Pit Hazard Inference";
+        icon.textContent = "smart_toy";
+      }, 2500);
+    }, 750);
+  }
+
+  function dispatchAlertSms() {
+    const btn = document.getElementById('dispatch-btn');
+    if (!btn) return;
+    btn.innerHTML = `<span class="material-symbols-outlined text-[14px]">done_all</span><span>Transmitted!</span>`;
+    btn.classList.remove('bg-error');
+    btn.classList.add('bg-tertiary-container', 'text-on-tertiary-container');
+    setTimeout(() => {
+      btn.innerHTML = `<span class="material-symbols-outlined text-[14px]">send</span><span>Transmit Dispatch</span>`;
+      btn.classList.remove('bg-tertiary-container', 'text-on-tertiary-container');
+      btn.classList.add('bg-error', 'text-on-error');
+    }, 3000);
+  }
+
+  function requestRadarCalibration() {
+    alert("InSAR ground station PRISM-NW-118 calibration pulse triggered. Sampling sync rate: 100Hz.");
+  }
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-1px_12px_rgba(0,0,0,0.4)]" data-active-classes="text-primary font-bold"><div class="flex justify-around items-center h-20 px-gutter"><a class="flex flex-col items-center justify-center gap-1 w-16 h-16 text-on-surface-variant hover:text-on-surface transition-colors" data-path="overview" href="#"><span class="material-symbols-outlined text-[22px]">dashboard</span><span class="font-label-sm text-label-sm">Overview</span></a><a aria-current="page" class="flex flex-col items-center justify-center gap-1 w-16 h-16 transition-colors text-primary font-bold" data-path="open-pit-monitoring" href="#"><span class="material-symbols-outlined text-[22px]">landscape</span><span class="font-label-sm text-label-sm">Open-Pit</span></a><a class="flex flex-col items-center justify-center gap-1 w-16 h-16 text-on-surface-variant hover:text-on-surface transition-colors" data-path="risk-predictions" href="#"><span class="material-symbols-outlined text-[22px]">insights</span><span class="font-label-sm text-label-sm">Predictions</span></a><a class="flex flex-col items-center justify-center gap-1 w-16 h-16 text-on-surface-variant hover:text-on-surface transition-colors relative" data-path="alerts-and-notifications" href="#"><span class="material-symbols-outlined text-[22px]">warning</span><span class="absolute top-2 right-3 w-2 h-2 rounded-full bg-primary-container animate-ping"></span><span class="font-label-sm text-label-sm">Alerts</span></a><a class="flex flex-col items-center justify-center gap-1 w-16 h-16 text-on-surface-variant hover:text-on-surface transition-colors" data-path="system-settings" href="#"><span class="material-symbols-outlined text-[22px]">tune</span><span class="font-label-sm text-label-sm">Settings</span></a></div></nav></body></html>
